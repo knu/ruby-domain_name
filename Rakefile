@@ -58,12 +58,24 @@ file etld_dat do
   }
 end
 
+task :test => 'lib/domain_name/unicode_autogen.rb'
+
+unicode_dat = 'data/UnicodeData.txt'
+
 file 'lib/domain_name/etld_data.rb' => [
   etld_dat,
   'lib/domain_name/etld_data.rb.erb',
   'tool/gen_etld_data.rb'
 ] do
   ruby 'tool/gen_etld_data.rb'
+end
+
+file 'lib/domain_name/unicode_autogen.rb' => [
+  unicode_dat,
+  'lib/domain_name/unicode_autogen.rb.erb',
+  'tool/gen_unicode_data.rb'
+] do
+  ruby 'tool/gen_unicode_data.rb'
 end
 
 require 'rake/rdoctask'

@@ -1,0 +1,65 @@
+# -*- coding: utf-8 -*-
+
+class DomainName
+  class Unicode
+    escape = proc { |cp|
+      Regexp.quote([cp].pack('U'))
+    }
+    list_to_regexp = proc { |*list|
+      pattern = ''
+      list.each { |cp|
+        case cp
+        when Range
+          cp1, cp2 = cp.begin, cp.end
+          if cp1 < 0x80 && 0x80 <= cp2
+            pattern << escape[cp1]
+            pattern << '-' << escape[0x7f] if cp1 != 0x7f
+            pattern << escape[0x80]
+            pattern << '-' << escape[cp2] if cp2 != 0x80
+          else
+            pattern << escape[cp1] << '-' << escape[cp2]
+          end
+        else
+          pattern << escape[cp]
+        end
+      }
+      /[#{pattern}]/u
+    }
+
+    if !defined?(RE_COMBINING)
+      RE_COMBINING = list_to_regexp[
+<%
+combining.each { |cp|
+  case cp
+  when Range
+%>        0x<%= '%04X' % cp.begin %>..0x<%= '%04X' % cp.end %>,
+<%
+  else
+%>        0x<%= '%04X' % cp %>,
+<%
+  end
+}
+%>      ]
+    end
+
+    RE_BIDI = {
+<%
+bidi_hash.each { |bidi, list|
+%>      <%= bidi.inspect %> => list_to_regexp[
+<%
+  list.each { |cp|
+    case cp
+    when Range
+%>        0x<%= '%04X' % cp.begin %>..0x<%= '%04X' % cp.end %>,
+<%
+    else
+%>        0x<%= '%04X' % cp %>,
+<%
+    end
+  }
+%>      ],
+<%
+}
+%>    }
+  end
+end
