@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akinori MUSHA"]
   s.date = "2011-10-29"
-  s.description = "TODO: longer description of your gem"
+  s.description = "This is a Domain Name manipulation library for Ruby.\n\nIt can also be used for cookie domain validation based on the Public\nSuffix List.\n"
   s.email = "knu@idaemons.org"
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "data/effective_tld_names.dat",
+    "domain_name.gemspec",
     "lib/domain_name.rb",
     "lib/domain_name/etld_data.rb",
     "lib/domain_name/etld_data.rb.erb",
@@ -33,11 +34,11 @@ Gem::Specification.new do |s|
     "test/test_domain_name.rb",
     "tool/gen_etld_data.rb"
   ]
-  s.homepage = "http://github.com/knu/domain_name"
-  s.licenses = ["MIT"]
+  s.homepage = "http://github.com/knu/ruby-domain_name"
+  s.licenses = ["BSD + MPL 1.1/GPL 2.0/LGPL 2.1"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.10"
-  s.summary = "TODO: one-line summary of your gem"
+  s.summary = "Domain Name manipulation library for Ruby"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
