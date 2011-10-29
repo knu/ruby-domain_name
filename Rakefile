@@ -15,10 +15,15 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "domain_name"
-  gem.homepage = "http://github.com/knu/domain_name"
-  gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.homepage = "http://github.com/knu/ruby-domain_name"
+  gem.license = "BSD + MPL 1.1/GPL 2.0/LGPL 2.1"
+  gem.summary = %Q{Domain Name manipulation library for Ruby}
+  gem.description = <<-EOS
+This is a Domain Name manipulation library for Ruby.
+
+It can also be used for cookie domain validation based on the Public
+Suffix List.
+  EOS
   gem.email = "knu@idaemons.org"
   gem.authors = ["Akinori MUSHA"]
   # dependencies defined in Gemfile
