@@ -4,7 +4,7 @@ domain_name
 Synopsis
 --------
 
-* Domain Name manipulation library for Ruby
+Domain Name manipulation library for Ruby
 
 Description
 -----------
@@ -20,9 +20,17 @@ Description
         host.cookie_domain?("example.co.uk")    #=> true
         host.cookie_domain?("co.uk")            #=> false
 
-        host = DomainName("[::1]")  # "192.168.1.1" and "::1" are also acceptable
+        host = DomainName("[::1]")  # IP addresses like "192.168.1.1" and "::1" are also acceptable
         host.ipaddr?        #=> true
-        host.cookie_domain?("0:0:0:0:0:0:0:1")  #=> false
+        host.cookie_domain?("0:0:0:0:0:0:0:1")  #=> true
+
+
+Caveats
+-------
+
+* It does not currently perform the strict domain label validation
+  defined in RFC 5891 and 5892.  It is being worked on on the
+  `unicode` branch.
 
 Installation
 ------------
