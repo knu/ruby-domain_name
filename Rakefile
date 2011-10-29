@@ -42,6 +42,25 @@ end
 
 task :default => :test
 
+task :test => 'lib/domain_name/etld_data.rb'
+
+etld_dat = 'data/effective_tld_names.dat'
+
+file etld_dat do
+  require 'open-uri'
+  File.open(etld_dat, 'w') { |dat|
+    dat.print URI('http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1').read
+  }
+end
+
+file 'lib/domain_name/etld_data.rb' => [
+  etld_dat,
+  'lib/domain_name/etld_data.rb.erb',
+  'tool/gen_etld_data.rb'
+] do
+  ruby 'tool/gen_etld_data.rb'
+end
+
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
