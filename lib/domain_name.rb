@@ -19,20 +19,20 @@ class DomainName
   # suitable for opening a connection to.
   attr_reader :hostname
 
-  # The least "universally original" domain part of this hostname.
+  # The least "universally original" domain part of this domain name.
   # For example, "example.co.uk" for "www.sub.example.co.uk".
   attr_reader :domain
 
-  # The TLD part of this hostname.  For example, if the hostname is
+  # The TLD part of this domain name.  For example, if the hostname is
   # "www.sub.example.co.uk", the TLD part is "uk".  This property is
-  # nil only if +ipaddr?+ is ptrue.
+  # nil only if +ipaddr?+ is true.
   attr_reader :tld
 
-  # Returns an IPAddr object if this 
+  # Returns an IPAddr object if this is an IP address.
   attr_reader :ipaddr
 
-  # Returns true if this hostname is an IP address, such as
-  # "192.168.0.1" and "[::1]".
+  # Returns true if this is an IP address, such as "192.168.0.1" and
+  # "[::1]".
   def ipaddr?
     @ipaddr ? true : false
   end
@@ -42,12 +42,13 @@ class DomainName
   # address enclosed in square brackets.
   attr_reader :uri_host
 
-  # Returns true if this hostname has a canonical TLD.
+  # Returns true if this domain name has a canonical TLD.
   def canonical_tld?
     @canonical_tld_p
   end
 
-  # Returns true if this hostname has a canonical registered domain.
+  # Returns true if this domain name has a canonical registered
+  # domain.
   def canonical?
     @canonical_tld_p && (@domain ? true : false)
   end
