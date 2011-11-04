@@ -182,6 +182,9 @@ class TestDomainName < Test::Unit::TestCase
       assert_equal("[#{a}]", dn.uri_host)
       assert_equal(a, dn.hostname)
       assert_equal(true, dn.ipaddr?)
+      assert_equal(true, dn.cookie_domain?(host))
+      assert_equal(true, dn.cookie_domain?(dn))
+      assert_equal(true, dn.cookie_domain?(a))
     }
   end
 end
