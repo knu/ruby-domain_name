@@ -16,74 +16,77 @@ class TestDomainName < Test::Unit::TestCase
   should "parse canonical domain names correctly" do
     [
       # Mixed case.
-      ['COM', nil],
-      ['example.COM', 'example.com'],
-      ['WwW.example.COM', 'example.com'],
+      ['COM', nil, false, 'com', true],
+      ['example.COM', 'example.com', true, 'com', true],
+      ['WwW.example.COM', 'example.com', true, 'com', true],
       # Unlisted TLD.
-      ['example', 'example'],
-      ['example.example', 'example.example'],
-      ['b.example.example', 'example.example'],
-      ['a.b.example.example', 'example.example'],
+      ['example', 'example', false, 'example', false],
+      ['example.example', 'example.example', false, 'example', false],
+      ['b.example.example', 'example.example', false, 'example', false],
+      ['a.b.example.example', 'example.example', false, 'example', false],
       # Listed, but non-Internet, TLD.
-      ['local', 'local'],
-      ['example.local', 'example.local'],
-      ['b.example.local', 'example.local'],
-      ['a.b.example.local', 'example.local'],
+      ['local', 'local', false, 'local', false],
+      ['example.local', 'example.local', false, 'local', false],
+      ['b.example.local', 'example.local', false, 'local', false],
+      ['a.b.example.local', 'example.local', false, 'local', false],
       # TLD with only 1 rule.
-      ['biz', nil],
-      ['domain.biz', 'domain.biz'],
-      ['b.domain.biz', 'domain.biz'],
-      ['a.b.domain.biz', 'domain.biz'],
+      ['biz', nil, false, 'biz', true],
+      ['domain.biz', 'domain.biz', true, 'biz', true],
+      ['b.domain.biz', 'domain.biz', true, 'biz', true],
+      ['a.b.domain.biz', 'domain.biz', true, 'biz', true],
       # TLD with some 2-level rules.
-      ['com', nil],
-      ['example.com', 'example.com'],
-      ['b.example.com', 'example.com'],
-      ['a.b.example.com', 'example.com'],
-      ['uk.com', nil],
-      ['example.uk.com', 'example.uk.com'],
-      ['b.example.uk.com', 'example.uk.com'],
-      ['a.b.example.uk.com', 'example.uk.com'],
-      ['test.ac', 'test.ac'],
+      ['com', nil, false, 'com', true],
+      ['example.com', 'example.com', true, 'com', true],
+      ['b.example.com', 'example.com', true, 'com', true],
+      ['a.b.example.com', 'example.com', true, 'com', true],
+      ['uk.com', nil, false, 'com', true],
+      ['example.uk.com', 'example.uk.com', true, 'com', true],
+      ['b.example.uk.com', 'example.uk.com', true, 'com', true],
+      ['a.b.example.uk.com', 'example.uk.com', true, 'com', true],
+      ['test.ac', 'test.ac', true, 'ac', true],
       # TLD with only 1 (wildcard) rule.
-      ['cy', nil],
-      ['c.cy', nil],
-      ['b.c.cy', 'b.c.cy'],
-      ['a.b.c.cy', 'b.c.cy'],
+      ['cy', nil, false, 'cy', true],
+      ['c.cy', nil, false, 'cy', true],
+      ['b.c.cy', 'b.c.cy', true, 'cy', true],
+      ['a.b.c.cy', 'b.c.cy', true, 'cy', true],
       # More complex TLD.
-      ['jp', nil],
-      ['test.jp', 'test.jp'],
-      ['www.test.jp', 'test.jp'],
-      ['ac.jp', nil],
-      ['test.ac.jp', 'test.ac.jp'],
-      ['www.test.ac.jp', 'test.ac.jp'],
-      ['kyoto.jp', nil],
-      ['c.kyoto.jp', nil],
-      ['b.c.kyoto.jp', 'b.c.kyoto.jp'],
-      ['a.b.c.kyoto.jp', 'b.c.kyoto.jp'],
-      ['pref.kyoto.jp', 'pref.kyoto.jp'],	# Exception rule
-      ['www.pref.kyoto.jp', 'pref.kyoto.jp'],	# Exception rule.
-      ['city.kyoto.jp', 'city.kyoto.jp'],	# Exception rule.
-      ['www.city.kyoto.jp', 'city.kyoto.jp'],	# Exception rule.
+      ['jp', nil, false, 'jp', true],
+      ['test.jp', 'test.jp', true, 'jp', true],
+      ['www.test.jp', 'test.jp', true, 'jp', true],
+      ['ac.jp', nil, false, 'jp', true],
+      ['test.ac.jp', 'test.ac.jp', true, 'jp', true],
+      ['www.test.ac.jp', 'test.ac.jp', true, 'jp', true],
+      ['kyoto.jp', nil, false, 'jp', true],
+      ['c.kyoto.jp', nil, false, 'jp', true],
+      ['b.c.kyoto.jp', 'b.c.kyoto.jp', true, 'jp', true],
+      ['a.b.c.kyoto.jp', 'b.c.kyoto.jp', true, 'jp', true],
+      ['pref.kyoto.jp', 'pref.kyoto.jp', true, 'jp', true],	# Exception rule
+      ['www.pref.kyoto.jp', 'pref.kyoto.jp', true, 'jp', true],	# Exception rule.
+      ['city.kyoto.jp', 'city.kyoto.jp', true, 'jp', true],	# Exception rule.
+      ['www.city.kyoto.jp', 'city.kyoto.jp', true, 'jp', true],	# Exception rule.
       # TLD with a wildcard rule and exceptions.
-      ['om', nil],
-      ['test.om', nil],
-      ['b.test.om', 'b.test.om'],
-      ['a.b.test.om', 'b.test.om'],
-      ['songfest.om', 'songfest.om'],
-      ['www.songfest.om', 'songfest.om'],
+      ['om', nil, false, 'om', true],
+      ['test.om', nil, false, 'om', true],
+      ['b.test.om', 'b.test.om', true, 'om', true],
+      ['a.b.test.om', 'b.test.om', true, 'om', true],
+      ['songfest.om', 'songfest.om', true, 'om', true],
+      ['www.songfest.om', 'songfest.om', true, 'om', true],
       # US K12.
-      ['us', nil],
-      ['test.us', 'test.us'],
-      ['www.test.us', 'test.us'],
-      ['ak.us', nil],
-      ['test.ak.us', 'test.ak.us'],
-      ['www.test.ak.us', 'test.ak.us'],
-      ['k12.ak.us', nil],
-      ['test.k12.ak.us', 'test.k12.ak.us'],
-      ['www.test.k12.ak.us', 'test.k12.ak.us'],
-    ].each { |hostname, domain|
+      ['us', nil, false, 'us', true],
+      ['test.us', 'test.us', true, 'us', true],
+      ['www.test.us', 'test.us', true, 'us', true],
+      ['ak.us', nil, false, 'us', true],
+      ['test.ak.us', 'test.ak.us', true, 'us', true],
+      ['www.test.ak.us', 'test.ak.us', true, 'us', true],
+      ['k12.ak.us', nil, false, 'us', true],
+      ['test.k12.ak.us', 'test.k12.ak.us', true, 'us', true],
+      ['www.test.k12.ak.us', 'test.k12.ak.us', true, 'us', true],
+    ].each { |hostname, domain, canonical, tld, canonical_tld|
       dn = DomainName.new(hostname)
       assert_equal(domain, dn.domain)
+      assert_equal(canonical, dn.canonical?)
+      assert_equal(tld, dn.tld)
+      assert_equal(canonical_tld, dn.canonical_tld?)
     }
   end
 
