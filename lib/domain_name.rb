@@ -66,13 +66,16 @@ class DomainName
       /\A\[([0-9A-Fa-f:]*:[0-9A-Fa-f:]*:[0-9A-Fa-f:]*)\]\z/
       @ipaddr = IPAddr.new($1)
       @uri_host = @hostname = @ipaddr.to_s
+      @domain = @tld = nil
       return
     when /\A\[([0-9A-Fa-f:]*:[0-9A-Fa-f:]*:[0-9A-Fa-f:]*)\]\z/
       @ipaddr = IPAddr.new($1)
       @hostname = @ipaddr.to_s
       @uri_host = "[#{@hostname}]"
+      @domain = @tld = nil
       return
     end
+    @ipaddr = nil
     @hostname = DomainName.normalize(hostname)
     @uri_host = @hostname
     if last_dot = @hostname.rindex(DOT)
