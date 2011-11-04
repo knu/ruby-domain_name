@@ -105,21 +105,29 @@ class TestDomainName < Test::Unit::TestCase
         assert_equal expected, a <=> b
         case expected
         when 1
-          assert_equal(true,  a > b)
+          assert_equal(true,  a >  b)
+          assert_equal(true,  a >= b)
           assert_equal(false, a == b)
-          assert_equal(false, a < b)
+          assert_equal(false, a <= b)
+          assert_equal(false, a <  b)
         when -1
-          assert_equal(true,  a < b)
+          assert_equal(true,  a <  b)
+          assert_equal(true,  a <= b)
           assert_equal(false, a == b)
-          assert_equal(false, a > b)
+          assert_equal(false, a >= b)
+          assert_equal(false, a >  b)
         when 0
-          assert_equal(false, a < b)
+          assert_equal(false, a <  b)
+          assert_equal(true,  a <= b)
           assert_equal(true,  a == b)
-          assert_equal(false, a > b)
+          assert_equal(true,  a >= b)
+          assert_equal(false, a >  b)
         when nil
-          assert_equal(nil,   a < b)
+          assert_equal(nil,   a <  b)
+          assert_equal(nil,   a <= b)
           assert_equal(false, a == b)
-          assert_equal(nil,   a > b)
+          assert_equal(nil,   a >= b)
+          assert_equal(nil,   a >  b)
         end
       }
     }
