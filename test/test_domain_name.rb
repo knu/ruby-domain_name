@@ -167,8 +167,21 @@ class TestDomainName < Test::Unit::TestCase
       ['b.pref.kyoto.jp', 'b.pref.kyoto.jp', true],
       ['b.pref.kyoto.jp', 'a.b.pref.kyoto.jp', false],
     ].each { |host, domain, expected|
-      assert_equal(expected, DomainName(host).cookie_domain?(domain))
-      assert_equal(expected, DomainName(host).cookie_domain?(DomainName(domain)))
+      dn = DomainName(host)
+      assert_equal(expected, dn.cookie_domain?(domain))
+      assert_equal(expected, dn.cookie_domain?(DomainName(domain)))
+      assert_equal(false, dn.ipaddr?)
+    }
+  end
+
+  should "parse IPv6 addresseses" do
+    a = '2001:200:dff:fff1:216:3eff:feb1:44d7'
+    b = '2001:0200:0dff:fff1:0216:3eff:feb1:44d7'
+    [b, b.upcase, "[#{b}]", "[#{b.upcase}]"].each { |host|
+      dn = DomainName(host)
+      assert_equal("[#{a}]", dn.uri_host)
+      assert_equal(a, dn.hostname)
+      assert_equal(true, dn.ipaddr?)
     }
   end
 end
