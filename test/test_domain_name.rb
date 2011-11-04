@@ -86,4 +86,78 @@ class TestDomainName < Test::Unit::TestCase
       assert_equal(domain, dn.domain)
     }
   end
+
+  should "compare hostnames correctly" do
+    [
+      ["foo.com", "abc.foo.com", 1],
+      ["COM", "abc.foo.com", 1],
+      ["abc.def.foo.com", "foo.com", -1],
+      ["abc.def.foo.com", "ABC.def.FOO.com", 0],
+      ["abc.def.foo.com", "bar.com", nil],
+    ].each { |x, y, v|
+      dx, dy = DomainName(x), DomainName(y)
+      [
+        [dx, y, v],
+        [dx, dy, v],
+        [dy, x, v ? -v : v],
+        [dy, dx, v ? -v : v],
+      ].each { |a, b, expected|
+        assert_equal expected, a <=> b
+        case expected
+        when 1
+          assert_equal(true,  a > b)
+          assert_equal(false, a == b)
+          assert_equal(false, a < b)
+        when -1
+          assert_equal(true,  a < b)
+          assert_equal(false, a == b)
+          assert_equal(false, a > b)
+        when 0
+          assert_equal(false, a < b)
+          assert_equal(true,  a == b)
+          assert_equal(false, a > b)
+        when nil
+          assert_equal(nil,   a < b)
+          assert_equal(false, a == b)
+          assert_equal(nil,   a > b)
+        end
+      }
+    }
+  end
+
+  should "check cookie domain correctly" do
+    [
+      ['b.kyoto.jp', 'jp', false],
+      ['b.kyoto.jp', 'kyoto.jp', false],
+      ['b.kyoto.jp', 'b.kyoto.jp', false],
+      ['b.kyoto.jp', 'a.b.kyoto.jp', false],
+
+      ['b.c.kyoto.jp', 'jp', false],
+      ['b.c.kyoto.jp', 'kyoto.jp', false],
+      ['b.c.kyoto.jp', 'c.kyoto.jp', false],
+      ['b.c.kyoto.jp', 'b.c.kyoto.jp', true],
+      ['b.c.kyoto.jp', 'a.b.c.kyoto.jp', false],
+
+      ['b.c.d.kyoto.jp', 'jp', false],
+      ['b.c.d.kyoto.jp', 'kyoto.jp', false],
+      ['b.c.d.kyoto.jp', 'd.kyoto.jp', false],
+      ['b.c.d.kyoto.jp', 'c.d.kyoto.jp', true],
+      ['b.c.d.kyoto.jp', 'b.c.d.kyoto.jp', true],
+      ['b.c.d.kyoto.jp', 'a.b.c.d.kyoto.jp', false],
+
+      ['pref.kyoto.jp', 'jp', false],
+      ['pref.kyoto.jp', 'kyoto.jp', false],
+      ['pref.kyoto.jp', 'pref.kyoto.jp', true],
+      ['pref.kyoto.jp', 'a.pref.kyoto.jp', false],
+
+      ['b.pref.kyoto.jp', 'jp', false],
+      ['b.pref.kyoto.jp', 'kyoto.jp', false],
+      ['b.pref.kyoto.jp', 'pref.kyoto.jp', true],
+      ['b.pref.kyoto.jp', 'b.pref.kyoto.jp', true],
+      ['b.pref.kyoto.jp', 'a.b.pref.kyoto.jp', false],
+    ].each { |host, domain, expected|
+      assert_equal(expected, DomainName(host).cookie_domain?(domain))
+      assert_equal(expected, DomainName(host).cookie_domain?(DomainName(domain)))
+    }
+  end
 end

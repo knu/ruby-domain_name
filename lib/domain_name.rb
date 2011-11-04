@@ -124,27 +124,81 @@ class DomainName
   # Checks if the server represented by _domain_ is qualified to send
   # and receive cookies for _domain_.
   def cookie_domain?(domain)
-    unless DomainName === domain
-      domain = DomainName.new(domain)
-    end
-    if @hostname == domain.hostname
-      true
-    elsif ipaddr?
+    domain = DomainName.new(domain) unless DomainName === domain
+    if ipaddr?
       # RFC 6265 #5.1.3
       # Do not perform subdomain matching against IP addresses.
-      false
+      @hostname == domain.hostname
     else
       # RFC 6265 #4.1.1
       # Domain-value must be a subdomain.
-      @hostname.end_with?('.' << domain)
+      @domain && self <= domain && domain <= @domain ? true : false
     end
   end
 
   def ==(other)
-    unless DomainName === other
-      other = DomainName.new(other)
-    end
+    other = DomainName.new(other) unless DomainName === other
     other.hostname == @hostname
+  end
+
+  def <=>(other)
+    other = DomainName.new(other) unless DomainName === other
+    othername = other.hostname
+    if othername == @hostname
+      0
+    elsif @hostname.end_with?(othername) && @hostname[-othername.size - 1] == '.'
+      # The other is higher
+      -1
+    elsif othername.end_with?(@hostname) && othername[-@hostname.size - 1] == '.'
+      # The other is lower
+      1
+    else
+      nil
+    end
+  end
+
+  def <(other)
+    case self <=> other
+    when -1
+      true
+    when nil
+      nil
+    else
+      false
+    end
+  end
+
+  def >(other)
+    case self <=> other
+    when 1
+      true
+    when nil
+      nil
+    else
+      false
+    end
+  end
+
+  def <=(other)
+    case self <=> other
+    when -1, 0
+      true
+    when nil
+      nil
+    else
+      false
+    end
+  end
+
+  def >=(other)
+    case self <=> other
+    when 1, 0
+      true
+    when nil
+      nil
+    else
+      false
+    end
   end
 
   def to_s
