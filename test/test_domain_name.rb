@@ -1,4 +1,5 @@
 require 'helper'
+require 'ipaddr'
 
 class TestDomainName < Test::Unit::TestCase
   should "raise ArgumentError if hostname starts with a dot" do
@@ -174,6 +175,22 @@ class TestDomainName < Test::Unit::TestCase
     }
   end
 
+  should "parse IPv4 addresseses" do
+    a = '192.168.10.20'
+    b = '192.168.010.020'
+    dn = DomainName(b)
+    assert_equal(a, dn.hostname)
+    assert_equal(true, dn.ipaddr?)
+    assert_equal(IPAddr.new(a), dn.ipaddr)
+    assert_equal(true, dn.cookie_domain?(a))
+    assert_equal(true, dn.cookie_domain?(b))
+    assert_equal(true, dn.cookie_domain?(dn))
+    assert_equal(false, dn.cookie_domain?('168.10.20'))
+    assert_equal(false, dn.cookie_domain?('168.010.020'))
+    assert_equal(false, dn.cookie_domain?('20'))
+    assert_equal(false, dn.cookie_domain?('020'))
+  end
+
   should "parse IPv6 addresseses" do
     a = '2001:200:dff:fff1:216:3eff:feb1:44d7'
     b = '2001:0200:0dff:fff1:0216:3eff:feb1:44d7'
@@ -182,6 +199,7 @@ class TestDomainName < Test::Unit::TestCase
       assert_equal("[#{a}]", dn.uri_host)
       assert_equal(a, dn.hostname)
       assert_equal(true, dn.ipaddr?)
+      assert_equal(IPAddr.new(a), dn.ipaddr)
       assert_equal(true, dn.cookie_domain?(host))
       assert_equal(true, dn.cookie_domain?(dn))
       assert_equal(true, dn.cookie_domain?(a))
