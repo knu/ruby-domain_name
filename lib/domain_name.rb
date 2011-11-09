@@ -58,6 +58,9 @@ class DomainName
   # Parses _hostname_ into a DomainName object.  An IP address is also
   # accepted.  An IPv6 address may be enclosed in square brackets.
   def initialize(hostname)
+    hostname.is_a?(String) or
+      (hostname.respond_to?(:to_str) && (hostname = hostname.to_str).is_a?(String)) or
+      raise TypeError, "#{hostname.class} is not a String"
     if hostname.start_with?(DOT)
       raise ArgumentError, "domain name must not start with a dot: #{hostname}"
     end

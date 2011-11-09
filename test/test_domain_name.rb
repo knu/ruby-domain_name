@@ -14,6 +14,26 @@ class TestDomainName < Test::Unit::TestCase
     }
   end
 
+  should "accept a String-alike for initialization" do
+    Object.new.tap { |obj|
+      def obj.to_str
+        "Example.org"
+      end
+      assert_equal "example.org", DomainName.new(obj).hostname
+    }
+
+    Object.new.tap { |obj|
+      def obj.to_str
+        123
+      end
+      assert_raises(TypeError) { DomainName.new(obj) }
+    }
+
+    Object.new.tap { |obj|
+      assert_raises(TypeError) { DomainName.new(obj) }
+    }
+  end
+
   should "parse canonical domain names correctly" do
     [
       # Mixed case.
