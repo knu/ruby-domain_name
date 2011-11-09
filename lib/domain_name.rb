@@ -146,10 +146,10 @@ class DomainName
     othername = other.hostname
     if othername == @hostname
       0
-    elsif @hostname.end_with?(othername) && @hostname[-othername.size - 1] == '.'
+    elsif @hostname.end_with?(othername) && @hostname[-othername.size - 1, 1] == '.'
       # The other is higher
       -1
-    elsif othername.end_with?(@hostname) && othername[-@hostname.size - 1] == '.'
+    elsif othername.end_with?(@hostname) && othername[-@hostname.size - 1, 1] == '.'
       # The other is lower
       1
     else
