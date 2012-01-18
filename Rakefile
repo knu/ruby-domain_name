@@ -66,7 +66,7 @@ file 'lib/domain_name/etld_data.rb' => [
   ruby 'tool/gen_etld_data.rb'
 end
 
-require 'rake/rdoctask'
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
