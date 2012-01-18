@@ -4,18 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{domain_name}
-  s.version = "0.5.1"
+  s.name = "domain_name"
+  s.version = "0.5.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{Akinori MUSHA}]
-  s.date = %q{2011-11-09}
-  s.description = %q{This is a Domain Name manipulation library for Ruby.
-
-It can also be used for cookie domain validation based on the Public
-Suffix List.
-}
-  s.email = %q{knu@idaemons.org}
+  s.authors = ["Akinori MUSHA"]
+  s.date = "2012-01-18"
+  s.description = "This is a Domain Name manipulation library for Ruby.\n\nIt can also be used for cookie domain validation based on the Public\nSuffix List.\n"
+  s.email = "knu@idaemons.org"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md"
@@ -38,11 +34,11 @@ Suffix List.
     "test/test_domain_name.rb",
     "tool/gen_etld_data.rb"
   ]
-  s.homepage = %q{http://github.com/knu/ruby-domain_name}
-  s.licenses = [%q{BSD + MPL 1.1/GPL 2.0/LGPL 2.1}]
-  s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.5}
-  s.summary = %q{Domain Name manipulation library for Ruby}
+  s.homepage = "http://github.com/knu/ruby-domain_name"
+  s.licenses = ["BSD + MPL 1.1/GPL 2.0/LGPL 2.1"]
+  s.require_paths = ["lib"]
+  s.rubygems_version = "1.8.11"
+  s.summary = "Domain Name manipulation library for Ruby"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
@@ -53,12 +49,14 @@ Suffix List.
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
+      s.add_development_dependency(%q<rdoc>, [">= 2.4.2"])
     else
       s.add_dependency(%q<unf>, ["~> 0.0.3"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_dependency(%q<rcov>, [">= 0"])
+      s.add_dependency(%q<rdoc>, [">= 2.4.2"])
     end
   else
     s.add_dependency(%q<unf>, ["~> 0.0.3"])
@@ -66,6 +64,7 @@ Suffix List.
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
     s.add_dependency(%q<rcov>, [">= 0"])
+    s.add_dependency(%q<rdoc>, [">= 2.4.2"])
   end
 end
 
