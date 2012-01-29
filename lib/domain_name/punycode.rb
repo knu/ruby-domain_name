@@ -2,7 +2,7 @@
 #
 # punycode.rb - PunyCode encoder for the Domain Name library
 #
-# Copyright (C) 2011 Akinori MUSHA, All rights reserved.
+# Copyright (C) 2011, 2012 Akinori MUSHA, All rights reserved.
 #
 # Ported from puny.c, a part of VeriSign XCode (encode/decode) IDN
 # Library.
@@ -90,7 +90,7 @@ class DomainName
       # Initialize the state
       n = INITIAL_N
       delta = 0
-      bias = INITIAL_BIAS;
+      bias = INITIAL_BIAS
 
       # Handle the basic code points
       input.each { |cp| output << cp.chr if cp < 0x80 }
@@ -134,7 +134,7 @@ class DomainName
             q = delta
             k = BASE
             loop {
-              t = k <= bias ? TMIN : k - bias >= TMAX ? TMAX : k - bias;
+              t = k <= bias ? TMIN : k - bias >= TMAX ? TMAX : k - bias
               break if q < t
               output << encode_digit(t + (q - t) % (BASE - t), false)
               q = (q - t) / (BASE - t)
