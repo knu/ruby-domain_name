@@ -58,13 +58,9 @@ class DomainName
     INITIAL_N = 0x80
     DELIMITER = '-'
 
-    # The maximum value of an DWORD variable
     MAXINT = (1 << 32) - 1
 
-    # Used in the calculation of bias:
     LOBASE = BASE - TMIN
-
-    # Used in the calculation of bias:
     CUTOFF = LOBASE * TMAX / 2
 
     RE_NONBASIC = /[^\x00-\x7f]/
@@ -73,110 +69,116 @@ class DomainName
     class ArgumentError < ::ArgumentError; end
     class BufferOverflowError < ArgumentError; end
 
-    # Returns the basic code point whose value (when used for
-    # representing integers) is d, which must be in the range 0 to
-    # BASE-1.  The lowercase form is used unless flag is true, in
-    # which case the uppercase form is used.  The behavior is
-    # undefined if flag is nonzero and digit d has no uppercase form.
-    def encode_digit(d, flag)
-      (d + 22 + (d < 26 ? 75 : 0) - (flag ? (1 << 5) : 0)).chr
-      #  0..25 map to ASCII a..z or A..Z
-      # 26..35 map to ASCII 0..9
-    end
-    module_function :encode_digit
+    class << self
+      private
 
-    # Main encode function
-    def encode(string)
-      input = string.unpack('U*')
-      output = ''
-
-      # Initialize the state
-      n = INITIAL_N
-      delta = 0
-      bias = INITIAL_BIAS
-
-      # Handle the basic code points
-      input.each { |cp| output << cp.chr if cp < 0x80 }
-
-      h = b = output.length
-
-      # h is the number of code points that have been handled, b is the
-      # number of basic code points, and out is the number of characters
-      # that have been output.
-
-      output << DELIMITER if b > 0
-
-      # Main encoding loop
-
-      while h < input.length
-        # All non-basic code points < n have been handled already.  Find
-        # the next larger one
-
-        m = MAXINT
-        input.each { |cp|
-          m = cp if (n...m) === cp
-        }
-
-        # Increase delta enough to advance the decoder's <n,i> state to
-        # <m,0>, but guard against overflow
-
-        delta += (m - n) * (h + 1)
-        raise BufferOverflowError if delta > MAXINT
-        n = m
-
-        input.each { |cp|
-          # AMC-ACE-Z can use this simplified version instead
-          if cp < n
-            delta += 1
-            raise BufferOverflowError if delta > MAXINT
-          elsif cp == n
-            # Represent delta as a generalized variable-length integer
-            q = delta
-            k = BASE
-            loop {
-              t = k <= bias ? TMIN : k - bias >= TMAX ? TMAX : k - bias
-              break if q < t
-              q, r = (q - t).divmod(BASE - t)
-              output << encode_digit(t + r, false)
-              k += BASE
-            }
-
-            output << encode_digit(q, false)
-
-            # Adapt the bias
-            delta = h == b ? delta / DAMP : delta >> 1
-            delta += delta / (h + 1)
-            bias = 0
-            while delta > CUTOFF
-              delta /= LOBASE
-              bias += BASE
-            end
-            bias += (LOBASE + 1) * delta / (delta + SKEW)
-
-            delta = 0
-            h += 1
-          end
-        }
-
-        delta += 1
-        n += 1
+      # Returns the basic code point whose value (when used for
+      # representing integers) is d, which must be in the range 0 to
+      # BASE-1.  The lowercase form is used unless flag is true, in
+      # which case the uppercase form is used.  The behavior is
+      # undefined if flag is nonzero and digit d has no uppercase
+      # form.
+      def encode_digit(d, flag)
+        (d + 22 + (d < 26 ? 75 : 0) - (flag ? (1 << 5) : 0)).chr
+        #  0..25 map to ASCII a..z or A..Z
+        # 26..35 map to ASCII 0..9
       end
 
-      output
-    end
-    module_function :encode
 
-    def encode_hostname(hostname)
-      hostname.match(RE_NONBASIC) or return hostname
+      public
 
-      hostname.split('.').map { |name|
-        if name.match(RE_NONBASIC)
-          'xn--' << encode(name)
-        else
-          name
+      # Encode a +string+ in Punycode
+      def encode(string)
+        input = string.unpack('U*')
+        output = ''
+
+        # Initialize the state
+        n = INITIAL_N
+        delta = 0
+        bias = INITIAL_BIAS
+
+        # Handle the basic code points
+        input.each { |cp| output << cp.chr if cp < 0x80 }
+
+        h = b = output.length
+
+        # h is the number of code points that have been handled, b is the
+        # number of basic code points, and out is the number of characters
+        # that have been output.
+
+        output << DELIMITER if b > 0
+
+        # Main encoding loop
+
+        while h < input.length
+          # All non-basic code points < n have been handled already.  Find
+          # the next larger one
+
+          m = MAXINT
+          input.each { |cp|
+            m = cp if (n...m) === cp
+          }
+
+          # Increase delta enough to advance the decoder's <n,i> state to
+          # <m,0>, but guard against overflow
+
+          delta += (m - n) * (h + 1)
+          raise BufferOverflowError if delta > MAXINT
+          n = m
+
+          input.each { |cp|
+            # AMC-ACE-Z can use this simplified version instead
+            if cp < n
+              delta += 1
+              raise BufferOverflowError if delta > MAXINT
+            elsif cp == n
+              # Represent delta as a generalized variable-length integer
+              q = delta
+              k = BASE
+              loop {
+                t = k <= bias ? TMIN : k - bias >= TMAX ? TMAX : k - bias
+                break if q < t
+                q, r = (q - t).divmod(BASE - t)
+                output << encode_digit(t + r, false)
+                k += BASE
+              }
+
+              output << encode_digit(q, false)
+
+              # Adapt the bias
+              delta = h == b ? delta / DAMP : delta >> 1
+              delta += delta / (h + 1)
+              bias = 0
+              while delta > CUTOFF
+                delta /= LOBASE
+                bias += BASE
+              end
+              bias += (LOBASE + 1) * delta / (delta + SKEW)
+
+              delta = 0
+              h += 1
+            end
+          }
+
+          delta += 1
+          n += 1
         end
-      }.join('.')
+
+        output
+      end
+
+      # Encode a hostname using IDN/Punycode algorithms
+      def encode_hostname(hostname)
+        hostname.match(RE_NONBASIC) or return hostname
+
+        hostname.split('.').map { |name|
+          if name.match(RE_NONBASIC)
+            'xn--' << encode(name)
+          else
+            name
+          end
+        }.join('.')
+      end
     end
-    module_function :encode_hostname
   end
 end
