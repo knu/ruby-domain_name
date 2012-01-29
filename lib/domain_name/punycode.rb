@@ -134,8 +134,8 @@ class DomainName
             loop {
               t = k <= bias ? TMIN : k - bias >= TMAX ? TMAX : k - bias
               break if q < t
-              output << encode_digit(t + (q - t) % (BASE - t), false)
-              q = (q - t) / (BASE - t)
+              q, r = (q - t).divmod(BASE - t)
+              output << encode_digit(t + r, false)
               k += BASE
             }
 
