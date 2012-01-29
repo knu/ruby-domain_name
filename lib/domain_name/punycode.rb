@@ -67,6 +67,8 @@ class DomainName
     # Used in the calculation of bias:
     CUTOFF = LOBASE * TMAX / 2
 
+    RE_NONBASIC = /[^\x00-\x7f]/
+
     # Most errors we raise are basically kind of ArgumentError.
     class ArgumentError < ::ArgumentError; end
     class BufferOverflowError < ArgumentError; end
@@ -165,10 +167,10 @@ class DomainName
     module_function :encode
 
     def encode_hostname(hostname)
-      hostname.match(/[^\x00-\x7f]/) or return hostname
+      hostname.match(RE_NONBASIC) or return hostname
 
       hostname.split('.').map { |name|
-        if name.match(/[^\x00-\x7f]/)
+        if name.match(RE_NONBASIC)
           'xn--' << encode(name)
         else
           name
