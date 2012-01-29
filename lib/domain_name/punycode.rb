@@ -59,7 +59,7 @@ class DomainName
     DELIMITER = '-'
 
     # The maximum value of an DWORD variable
-    MAXINT = (1 << 64) - 1
+    MAXINT = (1 << 32) - 1
 
     # Used in the calculation of bias:
     LOBASE = BASE - TMIN
@@ -67,8 +67,9 @@ class DomainName
     # Used in the calculation of bias:
     CUTOFF = LOBASE * TMAX / 2
 
-    class Error < StandardError; end
-    class BufferOverflowError < Error; end
+    # Most errors we raise are basically kind of ArgumentError.
+    class ArgumentError < ::ArgumentError; end
+    class BufferOverflowError < ArgumentError; end
 
     # Returns the basic code point whose value (when used for
     # representing integers) is d, which must be in the range 0 to
@@ -117,19 +118,16 @@ class DomainName
         # Increase delta enough to advance the decoder's <n,i> state to
         # <m,0>, but guard against overflow
 
-        if m - n > (MAXINT - delta) / (h + 1)
-          raise BufferOverflowError
-        end
         delta += (m - n) * (h + 1)
+        raise BufferOverflowError if delta > MAXINT
         n = m
 
         input.each { |cp|
           # AMC-ACE-Z can use this simplified version instead
-          if cp < n && (delta += 1) == 0
-            raise BufferOverflowError
-          end
-
-          if cp == n
+          if cp < n
+            delta += 1
+            raise BufferOverflowError if delta > MAXINT
+          elsif cp == n
             # Represent delta as a generalized variable-length integer
             q = delta
             k = BASE
