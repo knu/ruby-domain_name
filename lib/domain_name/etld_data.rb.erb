@@ -1,7 +1,8 @@
 class DomainName
   def self.etld_data
-    @@etld_data ||= {
-<% etld_data.each_pair { |key, value| %>      <%= key.inspect %> => <%= value.inspect %>,
-<% } %>    }
+    data = {}
+<% etld_data.each_pair { |key, value| %>    data[<%= key.inspect %>] = <%= value.inspect %>
+<% } %>
+    data
   end
 end
