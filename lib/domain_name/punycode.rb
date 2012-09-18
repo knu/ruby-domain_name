@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#
+#--
 # punycode.rb - PunyCode encoder for the Domain Name library
 #
 # Copyright (C) 2011, 2012 Akinori MUSHA, All rights reserved.
@@ -46,6 +46,7 @@
 #  Srikanth Veeramachaneni (VeriSign)
 #  Nagesh Chigurupati (Verisign)
 #  Praveen Srinivasan(Verisign)
+#++
 
 class DomainName
   module Punycode
