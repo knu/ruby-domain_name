@@ -197,18 +197,14 @@ class TestDomainName < Test::Unit::TestCase
 
   should "parse IPv4 addresseses" do
     a = '192.168.10.20'
-    b = '192.168.010.020'
-    dn = DomainName(b)
+    dn = DomainName(a)
     assert_equal(a, dn.hostname)
     assert_equal(true, dn.ipaddr?)
     assert_equal(IPAddr.new(a), dn.ipaddr)
     assert_equal(true, dn.cookie_domain?(a))
-    assert_equal(true, dn.cookie_domain?(b))
     assert_equal(true, dn.cookie_domain?(dn))
     assert_equal(false, dn.cookie_domain?('168.10.20'))
-    assert_equal(false, dn.cookie_domain?('168.010.020'))
     assert_equal(false, dn.cookie_domain?('20'))
-    assert_equal(false, dn.cookie_domain?('020'))
   end
 
   should "parse IPv6 addresseses" do
