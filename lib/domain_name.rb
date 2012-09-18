@@ -2,9 +2,10 @@
 #
 # domain_name.rb - Domain Name manipulation library for Ruby
 #
-# Copyright (C) 2011 Akinori MUSHA, All rights reserved.
+# Copyright (C) 2011, 2012 Akinori MUSHA, All rights reserved.
 #
 
+require 'domain_name/version'
 require 'domain_name/punycode'
 require 'domain_name/etld_data'
 require 'unf'

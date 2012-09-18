@@ -1,34 +1,4 @@
-# encoding: utf-8
-
-require 'rubygems'
-require 'bundler'
-begin
-  Bundler.setup(:default, :development)
-rescue Bundler::BundlerError => e
-  $stderr.puts e.message
-  $stderr.puts "Run `bundle install` to install missing gems"
-  exit e.status_code
-end
-require 'rake'
-
-require 'jeweler'
-Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "domain_name"
-  gem.homepage = "http://github.com/knu/ruby-domain_name"
-  gem.license = "BSD + MPL 1.1/GPL 2.0/LGPL 2.1"
-  gem.summary = %Q{Domain Name manipulation library for Ruby}
-  gem.description = <<-EOS
-This is a Domain Name manipulation library for Ruby.
-
-It can also be used for cookie domain validation based on the Public
-Suffix List.
-  EOS
-  gem.email = "knu@idaemons.org"
-  gem.authors = ["Akinori MUSHA"]
-  # dependencies defined in Gemfile
-end
-Jeweler::RubygemsDotOrgTasks.new
+require 'bundler/gem_tasks'
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
@@ -60,10 +30,10 @@ end
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+  version = DomainName::VERSION
 
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "domain_name #{version}"
-  rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
+  rdoc.rdoc_files.include(Bundler::GemHelper.gemspec.extra_rdoc_files)
 end
