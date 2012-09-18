@@ -78,13 +78,15 @@ class TestDomainName < Test::Unit::TestCase
       ['test.ac.jp', 'test.ac.jp', true, 'jp', true],
       ['www.test.ac.jp', 'test.ac.jp', true, 'jp', true],
       ['kyoto.jp', nil, false, 'jp', true],
-      ['c.kyoto.jp', nil, false, 'jp', true],
-      ['b.c.kyoto.jp', 'b.c.kyoto.jp', true, 'jp', true],
-      ['a.b.c.kyoto.jp', 'b.c.kyoto.jp', true, 'jp', true],
-      ['pref.kyoto.jp', 'pref.kyoto.jp', true, 'jp', true],	# Exception rule
-      ['www.pref.kyoto.jp', 'pref.kyoto.jp', true, 'jp', true],	# Exception rule.
-      ['city.kyoto.jp', 'city.kyoto.jp', true, 'jp', true],	# Exception rule.
-      ['www.city.kyoto.jp', 'city.kyoto.jp', true, 'jp', true],	# Exception rule.
+      ['test.kyoto.jp', 'test.kyoto.jp', true, 'jp', true],
+      ['ide.kyoto.jp', nil, false, 'jp', true],
+      ['b.ide.kyoto.jp', 'b.ide.kyoto.jp', true, 'jp', true],
+      ['a.b.ide.kyoto.jp', 'b.ide.kyoto.jp', true, 'jp', true],
+      ['c.kobe.jp', nil, false, 'jp', true],
+      ['b.c.kobe.jp', 'b.c.kobe.jp', true, 'jp', true],
+      ['a.b.c.kobe.jp', 'b.c.kobe.jp', true, 'jp', true],
+      ['city.kobe.jp', 'city.kobe.jp', true, 'jp', true],
+      ['www.city.kobe.jp', 'city.kobe.jp', true, 'jp', true],
       # TLD with a wildcard rule and exceptions.
       ['om', nil, false, 'om', true],
       ['test.om', nil, false, 'om', true],
@@ -159,34 +161,34 @@ class TestDomainName < Test::Unit::TestCase
 
   should "check cookie domain correctly" do
     [
-      ['b.kyoto.jp', 'jp', false],
-      ['b.kyoto.jp', 'kyoto.jp', false],
-      ['b.kyoto.jp', 'b.kyoto.jp', false],
-      ['b.kyoto.jp', 'a.b.kyoto.jp', false],
+      ['b.sapporo.jp', 'jp', false],
+      ['b.sapporo.jp', 'sapporo.jp', false],
+      ['b.sapporo.jp', 'b.sapporo.jp', false],
+      ['b.sapporo.jp', 'a.b.sapporo.jp', false],
 
-      ['b.c.kyoto.jp', 'jp', false],
-      ['b.c.kyoto.jp', 'kyoto.jp', false],
-      ['b.c.kyoto.jp', 'c.kyoto.jp', false],
-      ['b.c.kyoto.jp', 'b.c.kyoto.jp', true],
-      ['b.c.kyoto.jp', 'a.b.c.kyoto.jp', false],
+      ['b.c.sapporo.jp', 'jp', false],
+      ['b.c.sapporo.jp', 'sapporo.jp', false],
+      ['b.c.sapporo.jp', 'c.sapporo.jp', false],
+      ['b.c.sapporo.jp', 'b.c.sapporo.jp', true],
+      ['b.c.sapporo.jp', 'a.b.c.sapporo.jp', false],
 
-      ['b.c.d.kyoto.jp', 'jp', false],
-      ['b.c.d.kyoto.jp', 'kyoto.jp', false],
-      ['b.c.d.kyoto.jp', 'd.kyoto.jp', false],
-      ['b.c.d.kyoto.jp', 'c.d.kyoto.jp', true],
-      ['b.c.d.kyoto.jp', 'b.c.d.kyoto.jp', true],
-      ['b.c.d.kyoto.jp', 'a.b.c.d.kyoto.jp', false],
+      ['b.c.d.sapporo.jp', 'jp', false],
+      ['b.c.d.sapporo.jp', 'sapporo.jp', false],
+      ['b.c.d.sapporo.jp', 'd.sapporo.jp', false],
+      ['b.c.d.sapporo.jp', 'c.d.sapporo.jp', true],
+      ['b.c.d.sapporo.jp', 'b.c.d.sapporo.jp', true],
+      ['b.c.d.sapporo.jp', 'a.b.c.d.sapporo.jp', false],
 
-      ['pref.kyoto.jp', 'jp', false],
-      ['pref.kyoto.jp', 'kyoto.jp', false],
-      ['pref.kyoto.jp', 'pref.kyoto.jp', true],
-      ['pref.kyoto.jp', 'a.pref.kyoto.jp', false],
+      ['city.sapporo.jp', 'jp', false],
+      ['city.sapporo.jp', 'sapporo.jp', false],
+      ['city.sapporo.jp', 'city.sapporo.jp', true],
+      ['city.sapporo.jp', 'a.city.sapporo.jp', false],
 
-      ['b.pref.kyoto.jp', 'jp', false],
-      ['b.pref.kyoto.jp', 'kyoto.jp', false],
-      ['b.pref.kyoto.jp', 'pref.kyoto.jp', true],
-      ['b.pref.kyoto.jp', 'b.pref.kyoto.jp', true],
-      ['b.pref.kyoto.jp', 'a.b.pref.kyoto.jp', false],
+      ['b.city.sapporo.jp', 'jp', false],
+      ['b.city.sapporo.jp', 'sapporo.jp', false],
+      ['b.city.sapporo.jp', 'city.sapporo.jp', true],
+      ['b.city.sapporo.jp', 'b.city.sapporo.jp', true],
+      ['b.city.sapporo.jp', 'a.b.city.sapporo.jp', false],
     ].each { |host, domain, expected|
       dn = DomainName(host)
       assert_equal(expected, dn.cookie_domain?(domain))
