@@ -106,10 +106,10 @@ class TestDomainName < Test::Unit::TestCase
       ['www.test.k12.ak.us', 'test.k12.ak.us', true, 'us', true],
     ].each { |hostname, domain, canonical, tld, canonical_tld|
       dn = DomainName.new(hostname)
-      assert_equal(domain, dn.domain)
-      assert_equal(canonical, dn.canonical?)
-      assert_equal(tld, dn.tld)
-      assert_equal(canonical_tld, dn.canonical_tld?)
+      assert_equal(domain, dn.domain, hostname + ':domain')
+      assert_equal(canonical, dn.canonical?, hostname + ':canoninal?')
+      assert_equal(tld, dn.tld, hostname + ':tld')
+      assert_equal(canonical_tld, dn.canonical_tld?, hostname + ':canoninal_tld?')
     }
   end
 
