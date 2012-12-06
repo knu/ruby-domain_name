@@ -160,40 +160,77 @@ class TestDomainName < Test::Unit::TestCase
   end
 
   should "check cookie domain correctly" do
-    [
-      ['b.sapporo.jp', 'jp', false],
-      ['b.sapporo.jp', 'sapporo.jp', false],
-      ['b.sapporo.jp', 'b.sapporo.jp', false],
-      ['b.sapporo.jp', 'a.b.sapporo.jp', false],
+    {
+      'com' => [
+        ['com', false],
+        ['example.com', false],
+        ['foo.example.com', false],
+        ['bar.foo.example.com', false],
+      ],
 
-      ['b.c.sapporo.jp', 'jp', false],
-      ['b.c.sapporo.jp', 'sapporo.jp', false],
-      ['b.c.sapporo.jp', 'c.sapporo.jp', false],
-      ['b.c.sapporo.jp', 'b.c.sapporo.jp', true],
-      ['b.c.sapporo.jp', 'a.b.c.sapporo.jp', false],
+      'example.com' => [
+        ['com', false],
+        ['example.com', true],
+        ['foo.example.com', false],
+        ['bar.foo.example.com', false],
+      ],
 
-      ['b.c.d.sapporo.jp', 'jp', false],
-      ['b.c.d.sapporo.jp', 'sapporo.jp', false],
-      ['b.c.d.sapporo.jp', 'd.sapporo.jp', false],
-      ['b.c.d.sapporo.jp', 'c.d.sapporo.jp', true],
-      ['b.c.d.sapporo.jp', 'b.c.d.sapporo.jp', true],
-      ['b.c.d.sapporo.jp', 'a.b.c.d.sapporo.jp', false],
+      'foo.example.com' => [
+        ['com', false],
+        ['example.com', true],
+        ['foo.example.com', true],
+        ['foo.Example.com', true],
+        ['bar.foo.example.com', false],
+        ['bar.Foo.Example.com', false],
+      ],
 
-      ['city.sapporo.jp', 'jp', false],
-      ['city.sapporo.jp', 'sapporo.jp', false],
-      ['city.sapporo.jp', 'city.sapporo.jp', true],
-      ['city.sapporo.jp', 'a.city.sapporo.jp', false],
+      'b.sapporo.jp' => [
+        ['jp', false],
+        ['sapporo.jp', false],
+        ['b.sapporo.jp', false],
+        ['a.b.sapporo.jp', false],
+      ],
 
-      ['b.city.sapporo.jp', 'jp', false],
-      ['b.city.sapporo.jp', 'sapporo.jp', false],
-      ['b.city.sapporo.jp', 'city.sapporo.jp', true],
-      ['b.city.sapporo.jp', 'b.city.sapporo.jp', true],
-      ['b.city.sapporo.jp', 'a.b.city.sapporo.jp', false],
-    ].each { |host, domain, expected|
+      'b.c.sapporo.jp' => [
+        ['jp', false],
+        ['sapporo.jp', false],
+        ['c.sapporo.jp', false],
+        ['b.c.sapporo.jp', true],
+        ['a.b.c.sapporo.jp', false],
+      ],
+
+      'b.c.d.sapporo.jp' => [
+        ['jp', false],
+        ['sapporo.jp', false],
+        ['d.sapporo.jp', false],
+        ['c.d.sapporo.jp', true],
+        ['b.c.d.sapporo.jp', true],
+        ['a.b.c.d.sapporo.jp', false],
+      ],
+
+      'city.sapporo.jp' => [
+        ['jp', false],
+        ['sapporo.jp', false],
+        ['city.sapporo.jp', true],
+        ['a.city.sapporo.jp', false],
+      ],
+
+      'b.city.sapporo.jp' => [
+        ['jp', false],
+        ['sapporo.jp', false],
+        ['city.sapporo.jp', true],
+        ['b.city.sapporo.jp', true],
+        ['a.b.city.sapporo.jp', false],
+      ],
+    }.each_pair { |host, pairs|
       dn = DomainName(host)
-      assert_equal(expected, dn.cookie_domain?(domain))
-      assert_equal(expected, dn.cookie_domain?(DomainName(domain)))
-      assert_equal(false, dn.ipaddr?)
+      assert_equal(true, dn.cookie_domain?(host.upcase, true),     dn.to_s)
+      assert_equal(true, dn.cookie_domain?(host.downcase, true),   dn.to_s)
+      assert_equal(false, dn.cookie_domain?("www." << host, true), dn.to_s)
+      pairs.each { |domain, expected|
+        assert_equal(expected, dn.cookie_domain?(domain),             "%s - %s" % [dn.to_s, domain])
+        assert_equal(expected, dn.cookie_domain?(DomainName(domain)), "%s - %s" % [dn.to_s, domain])
+      }
     }
   end
 
@@ -204,7 +241,9 @@ class TestDomainName < Test::Unit::TestCase
     assert_equal(true, dn.ipaddr?)
     assert_equal(IPAddr.new(a), dn.ipaddr)
     assert_equal(true, dn.cookie_domain?(a))
+    assert_equal(true, dn.cookie_domain?(a, true))
     assert_equal(true, dn.cookie_domain?(dn))
+    assert_equal(true, dn.cookie_domain?(dn, true))
     assert_equal(false, dn.cookie_domain?('168.10.20'))
     assert_equal(false, dn.cookie_domain?('20'))
   end
@@ -219,8 +258,11 @@ class TestDomainName < Test::Unit::TestCase
       assert_equal(true, dn.ipaddr?)
       assert_equal(IPAddr.new(a), dn.ipaddr)
       assert_equal(true, dn.cookie_domain?(host))
+      assert_equal(true, dn.cookie_domain?(host, true))
       assert_equal(true, dn.cookie_domain?(dn))
+      assert_equal(true, dn.cookie_domain?(dn, true))
       assert_equal(true, dn.cookie_domain?(a))
+      assert_equal(true, dn.cookie_domain?(a, true))
     }
   end
 end

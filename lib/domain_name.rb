@@ -127,8 +127,14 @@ class DomainName
 
   # Checks if the server represented by this domain is qualified to
   # send and receive cookies with a domain attribute value of
-  # _domain_.
-  def cookie_domain?(domain)
+  # _domain_.  A true value given as the second argument represents
+  # cookies without a domain attribute value, in which case only
+  # hostname equality is checked.
+  def cookie_domain?(domain, host_only = false)
+    # RFC 6265 #5.3
+    # When the user agent "receives a cookie":
+    return self == domain if host_only
+
     domain = DomainName.new(domain) unless DomainName === domain
     if ipaddr?
       # RFC 6265 #5.1.3
