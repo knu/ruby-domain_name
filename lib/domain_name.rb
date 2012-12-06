@@ -125,8 +125,9 @@ class DomainName
     end
   end
 
-  # Checks if the server represented by _domain_ is qualified to send
-  # and receive cookies for _domain_.
+  # Checks if the server represented by this domain is qualified to
+  # send and receive cookies with a domain attribute value of
+  # _domain_.
   def cookie_domain?(domain)
     domain = DomainName.new(domain) unless DomainName === domain
     if ipaddr?
