@@ -14,6 +14,8 @@ def main
   erb_file = dir + 'etld_data.rb.erb'
   rb_file  = dir + 'etld_data.rb'
 
+  etld_data_date = File.mtime(dat_file)
+
   File.open(dat_file, 'r:utf-8') { |dat|
     etld_data = parse(dat)
     File.open(rb_file, 'w:utf-8') { |rb|

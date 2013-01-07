@@ -1,31 +1,50 @@
 require 'bundler/gem_tasks'
+require 'uri'
+
+ETLD_DATA_URI  = URI('http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1')
+ETLD_DATA_FILE = 'data/effective_tld_names.dat'
+ETLD_DATA_RB   = 'lib/domain_name/etld_data.rb'
+
+task :default => :test
+
+task :test => ETLD_DATA_RB
+
+file ETLD_DATA_RB => [
+  ETLD_DATA_FILE,
+  ETLD_DATA_RB + '.erb',
+  'tool/gen_etld_data.rb'
+] do
+  ruby 'tool/gen_etld_data.rb'
+end
+
+task :etld_data do
+  require 'open-uri'
+  require 'time'
+
+  begin
+    load File.join('.', ETLD_DATA_RB)
+
+    data = ETLD_DATA_URI.read(
+      'If-Modified-Since' => Time.parse(DomainName::ETLD_DATA_DATE).rfc2822
+    )
+    puts 'eTLD database is modified.'
+    File.write(ETLD_DATA_FILE, data)
+    File.utime Time.now, data.last_modified, ETLD_DATA_FILE
+    Rake::Task[ETLD_DATA_RB].execute
+  rescue OpenURI::HTTPError => e
+    if e.io.status.first == '304' # Not Modified
+      puts 'eTLD database is up-to-date.'
+    else
+      raise
+    end
+  end
+end
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
   test.pattern = 'test/**/test_*.rb'
   test.verbose = true
-end
-
-task :default => :test
-
-task :test => 'lib/domain_name/etld_data.rb'
-
-etld_dat = 'data/effective_tld_names.dat'
-
-file etld_dat do
-  require 'open-uri'
-  File.open(etld_dat, 'w') { |dat|
-    dat.print URI('http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1').read
-  }
-end
-
-file 'lib/domain_name/etld_data.rb' => [
-  etld_dat,
-  'lib/domain_name/etld_data.rb.erb',
-  'tool/gen_etld_data.rb'
-] do
-  ruby 'tool/gen_etld_data.rb'
 end
 
 require 'rdoc/task'
