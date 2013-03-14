@@ -30,6 +30,6 @@ Suffix List.
 
   gem.add_runtime_dependency("unf", ["~> 0.0.3"])
   gem.add_development_dependency("shoulda", [">= 0"])
-  gem.add_development_dependency("bundler", ["~> 1.2.0"])
+  gem.add_development_dependency("bundler", ["~> 1.3.2"])
   gem.add_development_dependency("rdoc", [">= 2.4.2"])
 end
