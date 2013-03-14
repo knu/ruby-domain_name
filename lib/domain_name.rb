@@ -2,7 +2,7 @@
 #
 # domain_name.rb - Domain Name manipulation library for Ruby
 #
-# Copyright (C) 2011, 2012 Akinori MUSHA, All rights reserved.
+# Copyright (C) 2011, 2012, 2013 Akinori MUSHA, All rights reserved.
 #
 
 require 'domain_name/version'

@@ -57,7 +57,7 @@ References
 License
 -------
 
-Copyright (c) 2011, 2012 Akinori MUSHA
+Copyright (c) 2011, 2012, 2013 Akinori MUSHA
 
 Licensed under the 2-clause BSD license.
 
