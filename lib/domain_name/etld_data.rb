@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2012-12-21T00:00:53Z'
+  ETLD_DATA_DATE = '2013-02-18T20:02:07Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -802,9 +802,11 @@ class DomainName
     "video.hu" => 0,
     "id" => 0,
     "ac.id" => 0,
+    "biz.id" => 0,
     "co.id" => 0,
     "go.id" => 0,
     "mil.id" => 0,
+    "my.id" => 0,
     "net.id" => 0,
     "or.id" => 0,
     "sch.id" => 0,
@@ -5265,10 +5267,15 @@ class DomainName
     "ac.tz" => 0,
     "co.tz" => 0,
     "go.tz" => 0,
+    "hotel.tz" => 0,
+    "info.tz" => 0,
+    "me.tz" => 0,
     "mil.tz" => 0,
+    "mobi.tz" => 0,
     "ne.tz" => 0,
     "or.tz" => 0,
     "sc.tz" => 0,
+    "tv.tz" => 0,
     "ua" => 0,
     "com.ua" => 0,
     "edu.ua" => 0,
