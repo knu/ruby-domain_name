@@ -28,7 +28,7 @@ Suffix List.
     "README.md"
   ]
 
-  gem.add_runtime_dependency("unf", ["~> 0.0.3"])
+  gem.add_runtime_dependency("unf", ["< 1.0.0", ">= 0.0.5"])
   gem.add_development_dependency("shoulda", [">= 0"])
   gem.add_development_dependency("bundler", ["~> 1.3.2"])
   gem.add_development_dependency("rake", [">= 0.9.2.2"])
