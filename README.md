@@ -25,12 +25,13 @@ Description
         host.cookie_domain?("0:0:0:0:0:0:0:1")  #=> true
 
 
-Caveats
+To-do's
 -------
 
-* It does not currently perform the strict domain label validation
-  defined in RFC 5891 and 5892.  It is being worked on on the
-  `unicode` branch.
+* Implement the strict domain label validation defined in RFC 5891 and
+  5892.  It will be worked on on the `unicode` branch.
+
+* Define a compact YAML serialization format.
 
 Installation
 ------------
