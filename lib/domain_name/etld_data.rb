@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2013-02-18T20:02:07Z'
+  ETLD_DATA_DATE = '2013-03-31T03:02:39Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -539,6 +539,11 @@ class DomainName
     "gov.cu" => 0,
     "inf.cu" => 0,
     "cv" => 0,
+    "cw" => 0,
+    "com.cw" => 0,
+    "edu.cw" => 0,
+    "net.cw" => 0,
+    "org.cw" => 0,
     "cx" => 0,
     "gov.cx" => 0,
     "cy" => -1,
@@ -4793,6 +4798,7 @@ class DomainName
     "org.pn" => 0,
     "edu.pn" => 0,
     "net.pn" => 0,
+    "post" => 0,
     "pr" => 0,
     "com.pr" => 0,
     "net.pr" => 0,
@@ -6075,6 +6081,28 @@ class DomainName
     "writesthisblog.com" => 0,
     "betainabox.com" => 0,
     "rhcloud.com" => 0,
+    "elb.amazonaws.com" => 0,
+    "s3.amazonaws.com" => 0,
+    "s3-us-west-2.amazonaws.com" => 0,
+    "s3-us-west-1.amazonaws.com" => 0,
+    "s3-eu-west-1.amazonaws.com" => 0,
+    "s3-ap-southeast-1.amazonaws.com" => 0,
+    "s3-ap-southeast-2.amazonaws.com" => 0,
+    "s3-ap-northeast-1.amazonaws.com" => 0,
+    "s3-sa-east-1.amazonaws.com" => 0,
+    "s3-us-gov-west-1.amazonaws.com" => 0,
+    "s3-fips-us-gov-west-1.amazonaws.com" => 0,
+    "s3-website-us-east-1.amazonaws.com" => 0,
+    "s3-website-us-west-2.amazonaws.com" => 0,
+    "s3-website-us-west-1.amazonaws.com" => 0,
+    "s3-website-eu-west-1.amazonaws.com" => 0,
+    "s3-website-ap-southeast-1.amazonaws.com" => 0,
+    "s3-website-ap-southeast-2.amazonaws.com" => 0,
+    "s3-website-ap-northeast-1.amazonaws.com" => 0,
+    "s3-website-sa-east-1.amazonaws.com" => 0,
+    "s3-website-us-gov-west-1.amazonaws.com" => 0,
+    "cloudfront.net" => 0,
+    "nyc.mn" => 0,
   }
 
   def self.etld_data
