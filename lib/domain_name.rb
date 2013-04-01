@@ -21,12 +21,17 @@ class DomainName
   attr_reader :hostname
 
   # The least "universally original" domain part of this domain name.
-  # For example, "example.co.uk" for "www.sub.example.co.uk".
+  # For example, "example.co.uk" for "www.sub.example.co.uk".  This
+  # may be nil if the hostname does not have one, like when it is an
+  # IP address, an effective TLD or higher itself, or of a
+  # non-canonical domain.
   attr_reader :domain
 
   # The TLD part of this domain name.  For example, if the hostname is
   # "www.sub.example.co.uk", the TLD part is "uk".  This property is
-  # nil only if +ipaddr?+ is true.
+  # nil only if +ipaddr?+ is true.  This may be nil if the hostname
+  # does not have one, like when it is an IP address or of a
+  # non-canonical domain.
   attr_reader :tld
 
   # Returns an IPAddr object if this is an IP address.
