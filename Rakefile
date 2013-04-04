@@ -17,6 +17,8 @@ file ETLD_DATA_RB => [
   ruby 'tool/gen_etld_data.rb'
 end
 
+task :import => :etld_data
+
 task :etld_data do
   require 'open-uri'
   require 'time'
