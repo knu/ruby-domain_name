@@ -246,6 +246,7 @@ class TestDomainName < Test::Unit::TestCase
     assert_equal(true, dn.cookie_domain?(dn, true))
     assert_equal(false, dn.cookie_domain?('168.10.20'))
     assert_equal(false, dn.cookie_domain?('20'))
+    assert_equal(nil, dn.superdomain)
   end
 
   should "parse IPv6 addresseses" do
@@ -263,6 +264,22 @@ class TestDomainName < Test::Unit::TestCase
       assert_equal(true, dn.cookie_domain?(dn, true))
       assert_equal(true, dn.cookie_domain?(a))
       assert_equal(true, dn.cookie_domain?(a, true))
+      assert_equal(nil, dn.superdomain)
+    }
+  end
+
+  should "get superdomain" do
+    [
+      %w[www.sub.example.local sub.example.local example.local local],
+      %w[www.sub.example.com sub.example.com example.com com],
+    ].each { |domain, *superdomains|
+      dn = DomainName(domain)
+      superdomains.each { |superdomain|
+        sdn = DomainName(superdomain)
+        assert_equal sdn, dn.superdomain
+        dn = sdn
+      }
+      assert_equal nil, dn.superdomain
     }
   end
 end

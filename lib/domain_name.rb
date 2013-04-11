@@ -152,6 +152,13 @@ class DomainName
     end
   end
 
+  # Returns the superdomain of this domain name.
+  def superdomain
+    return nil if ipaddr?
+    pos = @hostname.index(DOT) or return nil
+    self.class.new(@hostname[(pos + 1)..-1])
+  end
+
   def ==(other)
     other = DomainName.new(other) unless DomainName === other
     other.hostname == @hostname
