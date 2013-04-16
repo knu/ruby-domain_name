@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'helper'
 require 'ipaddr'
 
@@ -281,5 +282,16 @@ class TestDomainName < Test::Unit::TestCase
       }
       assert_equal nil, dn.superdomain
     }
+  end
+
+  should "have idn methods" do
+    dn = DomainName("金八先生.B組.3年.日本語ドメイン名Example.日本")
+
+    assert_equal "xn--44q1cv48kq8x.xn--b-gf6c.xn--3-pj3b.xn--example-6q4fyliikhk162btq3b2zd4y2o.xn--wgv71a", dn.hostname
+    assert_equal "金八先生.b組.3年.日本語ドメイン名example.日本", dn.hostname_idn
+    assert_equal "xn--example-6q4fyliikhk162btq3b2zd4y2o.xn--wgv71a", dn.domain
+    assert_equal "日本語ドメイン名example.日本", dn.domain_idn
+    assert_equal "xn--wgv71a", dn.tld
+    assert_equal "日本", dn.tld_idn
   end
 end

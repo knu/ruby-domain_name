@@ -20,6 +20,10 @@ class DomainName
   # suitable for opening a connection to.
   attr_reader :hostname
 
+  # The Unicode representation of the #hostname property.
+  #
+  # :attr_reader: hostname_idn
+
   # The least "universally original" domain part of this domain name.
   # For example, "example.co.uk" for "www.sub.example.co.uk".  This
   # may be nil if the hostname does not have one, like when it is an
@@ -27,12 +31,20 @@ class DomainName
   # non-canonical domain.
   attr_reader :domain
 
+  # The Unicode representation of the #domain property.
+  #
+  # :attr_reader: domain_idn
+
   # The TLD part of this domain name.  For example, if the hostname is
   # "www.sub.example.co.uk", the TLD part is "uk".  This property is
   # nil only if +ipaddr?+ is true.  This may be nil if the hostname
   # does not have one, like when it is an IP address or of a
   # non-canonical domain.
   attr_reader :tld
+
+  # The Unicode representation of the #tld property.
+  #
+  # :attr_reader: tld_idn
 
   # Returns an IPAddr object if this is an IP address.
   attr_reader :ipaddr
@@ -229,6 +241,35 @@ class DomainName
   end
 
   alias to_str to_s
+
+  def hostname_idn
+    @hostname_idn ||=
+      if @ipaddr
+        @hostname
+      else
+        DomainName::Punycode.decode_hostname(@hostname)
+      end
+  end
+
+  alias idn hostname_idn
+
+  def domain_idn
+    @domain_idn ||=
+      if @ipaddr
+        @domain
+      else
+        DomainName::Punycode.decode_hostname(@domain)
+      end
+  end
+
+  def tld_idn
+    @tld_idn ||=
+      if @ipaddr
+        @tld
+      else
+        DomainName::Punycode.decode_hostname(@tld)
+      end
+  end
 
   def inspect
     str = '#<%s:%s' % [self.class.name, @hostname]
