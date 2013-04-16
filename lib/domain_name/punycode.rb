@@ -2,7 +2,7 @@
 #--
 # punycode.rb - PunyCode encoder for the Domain Name library
 #
-# Copyright (C) 2011, 2012 Akinori MUSHA, All rights reserved.
+# Copyright (C) 2011, 2012, 2013 Akinori MUSHA, All rights reserved.
 #
 # Ported from puny.c, a part of VeriSign XCode (encode/decode) IDN
 # Library.
@@ -57,7 +57,7 @@ class DomainName
     DAMP = 700
     INITIAL_BIAS = 72
     INITIAL_N = 0x80
-    DELIMITER = '-'
+    DELIMITER = '-'.freeze
 
     MAXINT = (1 << 32) - 1
 
@@ -66,6 +66,9 @@ class DomainName
 
     RE_NONBASIC = /[^\x00-\x7f]/
 
+    # Returns the numeric value of a basic code point (for use in
+    # representing integers) in the range 0 to base-1, or nil if cp
+    # is does not represent a value.
     DECODE_DIGIT = {}.tap { |map|
       # ASCII A..Z map to 0..25
       # ASCII a..z map to 0..25
@@ -74,34 +77,26 @@ class DomainName
       (26..35).each { |i| map[22 + i] = i }
     }
 
+    # Returns the basic code point whose value (when used for
+    # representing integers) is d, which must be in the range 0 to
+    # BASE-1.  The lowercase form is used unless flag is true, in
+    # which case the uppercase form is used.  The behavior is
+    # undefined if flag is nonzero and digit d has no uppercase
+    # form.
+    ENCODE_DIGIT = proc { |d, flag|
+      (d + 22 + (d < 26 ? 75 : 0) - (flag ? (1 << 5) : 0)).chr
+      #  0..25 map to ASCII a..z or A..Z
+      # 26..35 map to ASCII 0..9
+    }
+
+    DOT = '.'.freeze
+    PREFIX = 'xn--'.freeze
+
     # Most errors we raise are basically kind of ArgumentError.
     class ArgumentError < ::ArgumentError; end
     class BufferOverflowError < ArgumentError; end
 
     class << self
-      private
-
-      # Returns the basic code point whose value (when used for
-      # representing integers) is d, which must be in the range 0 to
-      # BASE-1.  The lowercase form is used unless flag is true, in
-      # which case the uppercase form is used.  The behavior is
-      # undefined if flag is nonzero and digit d has no uppercase
-      # form.
-      def encode_digit(d, flag)
-        (d + 22 + (d < 26 ? 75 : 0) - (flag ? (1 << 5) : 0)).chr
-        #  0..25 map to ASCII a..z or A..Z
-        # 26..35 map to ASCII 0..9
-      end
-
-      # Returns the numeric value of a basic code point (for use in
-      # representing integers) in the range 0 to base-1, or nil if cp
-      # is does not represent a value.
-      def decode_digit(cp)
-        DECODE_DIGIT[cp]
-      end
-
-      public
-
       # Encode a +string+ in Punycode
       def encode(string)
         input = string.unpack('U*')
@@ -154,11 +149,11 @@ class DomainName
                 t = k <= bias ? TMIN : k - bias >= TMAX ? TMAX : k - bias
                 break if q < t
                 q, r = (q - t).divmod(BASE - t)
-                output << encode_digit(t + r, false)
+                output << ENCODE_DIGIT[t + r, false]
                 k += BASE
               }
 
-              output << encode_digit(q, false)
+              output << ENCODE_DIGIT[q, false]
 
               # Adapt the bias
               delta = h == b ? delta / DAMP : delta >> 1
@@ -186,13 +181,13 @@ class DomainName
       def encode_hostname(hostname)
         hostname.match(RE_NONBASIC) or return hostname
 
-        hostname.split('.').map { |name|
+        hostname.split(DOT).map { |name|
           if name.match(RE_NONBASIC)
-            'xn--' << encode(name)
+            PREFIX + encode(name)
           else
             name
           end
-        }.join('.')
+        }.join(DOT)
       end
 
       # Decode a +string+ encoded in Punycode
@@ -237,7 +232,7 @@ class DomainName
           k = BASE
 
           loop {
-            digit = decode_digit(input[h]) or
+            digit = DECODE_DIGIT[input[h]] or
             raise ArgumentError, "Illegal character is found in non-basic part: #{string.inspect}"
             h += 1
             i += digit * w
@@ -279,7 +274,7 @@ class DomainName
 
       # Decode a hostname using IDN/Punycode algorithms
       def decode_hostname(hostname)
-        hostname.gsub(/(\A|\.)xn--([^.]*)/) {
+        hostname.gsub(/(\A|#{Regexp.quote(DOT)})#{Regexp.quote(PREFIX)}([^#{Regexp.quote(DOT)}]*)/o) {
           $1 << decode($2)
         }
       end
