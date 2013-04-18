@@ -9,26 +9,25 @@ task :default => :test
 
 task :test => ETLD_DATA_RB
 
-file ETLD_DATA_RB => [
-  ETLD_DATA_FILE,
-  ETLD_DATA_RB + '.erb',
-  'tool/gen_etld_data.rb'
-] do
-  ruby 'tool/gen_etld_data.rb'
-end
-
 task :import => :etld_data
+
+#
+# eTLD Database
+#
 
 task :etld_data do
   require 'open-uri'
   require 'time'
 
   begin
-    load File.join('.', ETLD_DATA_RB)
-
-    data = ETLD_DATA_URI.read(
-      'If-Modified-Since' => Time.parse(DomainName::ETLD_DATA_DATE).rfc2822
-    )
+    begin
+      load File.join('.', ETLD_DATA_RB)
+      data = ETLD_DATA_URI.read(
+        'If-Modified-Since' => Time.parse(DomainName::ETLD_DATA_DATE).rfc2822
+      )
+    rescue LoadError, NameError
+      data = ETLD_DATA_URI.read
+    end
     puts 'eTLD database is modified.'
     File.write(ETLD_DATA_FILE, data)
     File.utime Time.now, data.last_modified, ETLD_DATA_FILE
@@ -40,6 +39,14 @@ task :etld_data do
       raise
     end
   end
+end
+
+file ETLD_DATA_RB => [
+  ETLD_DATA_FILE,
+  ETLD_DATA_RB + '.erb',
+  'tool/gen_etld_data.rb'
+] do
+  ruby 'tool/gen_etld_data.rb'
 end
 
 require 'rake/testtask'
