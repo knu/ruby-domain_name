@@ -24,12 +24,13 @@ Description
         host.ipaddr?        #=> true
         host.cookie_domain?("0:0:0:0:0:0:0:1")  #=> true
 
+* Implements rudimental IDNA support.
 
 To-do's
 -------
 
-* Implement the strict domain label validation defined in RFC 5891 and
-  5892.  It will be worked on on the `unicode` branch.
+* Implement the domain label validation and mapping defined in
+  RFC 5891-5895 and UTS #46.
 
 * Define a compact YAML serialization format.
 
