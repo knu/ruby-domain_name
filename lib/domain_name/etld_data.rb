@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2013-04-05T23:00:49Z'
+  ETLD_DATA_DATE = '2013-04-23T23:01:15Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -5717,6 +5717,7 @@ class DomainName
     "zm" => -1,
     "zw" => -1,
     "cloudfront.net" => 0,
+    "elasticbeanstalk.com" => 0,
     "elb.amazonaws.com" => 0,
     "s3.amazonaws.com" => 0,
     "s3-us-west-2.amazonaws.com" => 0,
@@ -6049,6 +6050,7 @@ class DomainName
     "webhop.org" => 0,
     "worse-than.tv" => 0,
     "writesthisblog.com" => 0,
+    "github.io" => 0,
     "appspot.com" => 0,
     "blogspot.be" => 0,
     "blogspot.bj" => 0,
