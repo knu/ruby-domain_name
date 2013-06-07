@@ -29,8 +29,9 @@ Description
 To-do's
 -------
 
-* Implement the domain label validation and mapping defined in
-  RFC 5891-5895 and UTS #46.
+* Implement IDNA 2008 (and/or 2003) including the domain label
+  validation and mapping defined in RFC 5891-5895 and UTS #46.
+  (work in progress)
 
 * Define a compact YAML serialization format.
 
