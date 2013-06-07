@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2013-04-23T23:01:15Z'
+  ETLD_DATA_DATE = '2013-06-06T23:00:56Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -5717,6 +5717,19 @@ class DomainName
     "zm" => -1,
     "zw" => -1,
     "cloudfront.net" => 0,
+    "compute.amazonaws.com" => 0,
+    "us-east-1.amazonaws.com" => 0,
+    "compute-1.amazonaws.com" => 0,
+    "z-1.compute-1.amazonaws.com" => 0,
+    "z-2.compute-1.amazonaws.com" => 0,
+    "ap-northeast-1.compute.amazonaws.com" => 0,
+    "ap-southeast-1.compute.amazonaws.com" => 0,
+    "ap-southeast-2.compute.amazonaws.com" => 0,
+    "eu-west-1.compute.amazonaws.com" => 0,
+    "sa-east-1.compute.amazonaws.com" => 0,
+    "us-gov-west-1.compute.amazonaws.com" => 0,
+    "us-west-1.compute.amazonaws.com" => 0,
+    "us-west-2.compute.amazonaws.com" => 0,
     "elasticbeanstalk.com" => 0,
     "elb.amazonaws.com" => 0,
     "s3.amazonaws.com" => 0,
@@ -6095,6 +6108,8 @@ class DomainName
     "codespot.com" => 0,
     "googleapis.com" => 0,
     "googlecode.com" => 0,
+    "herokuapp.com" => 0,
+    "herokussl.com" => 0,
     "iki.fi" => 0,
     "biz.at" => 0,
     "info.at" => 0,
