@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2013-06-06T23:00:56Z'
+  ETLD_DATA_DATE = '2013-07-12T03:02:50Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -180,6 +180,7 @@ class DomainName
     "gov.au" => 0,
     "asn.au" => 0,
     "id.au" => 0,
+    "csiro.au" => 0,
     "info.au" => 0,
     "conf.au" => 0,
     "oz.au" => 0,
@@ -6063,6 +6064,11 @@ class DomainName
     "webhop.org" => 0,
     "worse-than.tv" => 0,
     "writesthisblog.com" => 0,
+    "a.ssl.fastly.net" => 0,
+    "b.ssl.fastly.net" => 0,
+    "global.ssl.fastly.net" => 0,
+    "a.prod.fastly.net" => 0,
+    "global.prod.fastly.net" => 0,
     "github.io" => 0,
     "appspot.com" => 0,
     "blogspot.be" => 0,
