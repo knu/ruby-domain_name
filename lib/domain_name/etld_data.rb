@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2013-07-12T03:02:50Z'
+  ETLD_DATA_DATE = '2013-08-15T11:01:26Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -5781,6 +5781,8 @@ class DomainName
     "uy.com" => 0,
     "za.com" => 0,
     "c.la" => 0,
+    "cloudcontrolled.com" => 0,
+    "cloudcontrolapp.com" => 0,
     "co.ca" => 0,
     "co.nl" => 0,
     "co.no" => 0,
@@ -6070,6 +6072,7 @@ class DomainName
     "a.prod.fastly.net" => 0,
     "global.prod.fastly.net" => 0,
     "github.io" => 0,
+    "ro.com" => 0,
     "appspot.com" => 0,
     "blogspot.be" => 0,
     "blogspot.bj" => 0,
