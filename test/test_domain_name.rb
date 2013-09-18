@@ -89,12 +89,12 @@ class TestDomainName < Test::Unit::TestCase
       ['city.kobe.jp', 'city.kobe.jp', true, 'jp', true],
       ['www.city.kobe.jp', 'city.kobe.jp', true, 'jp', true],
       # TLD with a wildcard rule and exceptions.
-      ['om', nil, false, 'om', true],
-      ['test.om', nil, false, 'om', true],
-      ['b.test.om', 'b.test.om', true, 'om', true],
-      ['a.b.test.om', 'b.test.om', true, 'om', true],
-      ['songfest.om', 'songfest.om', true, 'om', true],
-      ['www.songfest.om', 'songfest.om', true, 'om', true],
+      ['ck', nil, false, 'ck', true],
+      ['test.ck', nil, false, 'ck', true],
+      ['b.test.ck', 'b.test.ck', true, 'ck', true],
+      ['a.b.test.ck', 'b.test.ck', true, 'ck', true],
+      ['www.ck', 'www.ck', true, 'ck', true],
+      ['www.www.ck', 'www.ck', true, 'ck', true],
       # US K12.
       ['us', nil, false, 'us', true],
       ['test.us', 'test.us', true, 'us', true],
