@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2013-10-16T07:01:24Z'
+  ETLD_DATA_DATE = '2013-10-26T03:04:33Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -5861,6 +5861,7 @@ class DomainName
     "co.ca" => 0,
     "co.nl" => 0,
     "co.no" => 0,
+    "cupcake.is" => 0,
     "dreamhosters.com" => 0,
     "dyndns-at-home.com" => 0,
     "dyndns-at-work.com" => 0,
