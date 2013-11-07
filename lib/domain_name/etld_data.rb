@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2013-10-26T03:04:33Z'
+  ETLD_DATA_DATE = '2013-11-06T20:01:28Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -4563,16 +4563,6 @@ class DomainName
     "net.om" => 0,
     "org.om" => 0,
     "pro.om" => 0,
-    "mediaphone.om" => 1,
-    "nawrastelecom.om" => 1,
-    "nawras.om" => 1,
-    "omanmobile.om" => 1,
-    "omanpost.om" => 1,
-    "omantel.om" => 1,
-    "rakpetroleum.om" => 1,
-    "siemens.om" => 1,
-    "songfest.om" => 1,
-    "statecouncil.om" => 1,
     "org" => 0,
     "pa" => 0,
     "ac.pa" => 0,
@@ -5502,7 +5492,6 @@ class DomainName
     "k12.pr.us" => 0,
     "k12.ri.us" => 0,
     "k12.sc.us" => 0,
-    "k12.sd.us" => 0,
     "k12.tn.us" => 0,
     "k12.tx.us" => 0,
     "k12.ut.us" => 0,

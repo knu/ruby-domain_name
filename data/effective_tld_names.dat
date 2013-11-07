@@ -5050,16 +5050,6 @@ museum.om
 net.om
 org.om
 pro.om
-!mediaphone.om
-!nawrastelecom.om
-!nawras.om
-!omanmobile.om
-!omanpost.om
-!omantel.om
-!rakpetroleum.om
-!siemens.om
-!songfest.om
-!statecouncil.om
 
 // org : http://en.wikipedia.org/wiki/.org
 org
@@ -6173,7 +6163,7 @@ k12.pa.us
 k12.pr.us
 k12.ri.us
 k12.sc.us
-k12.sd.us
+// k12.sd.us  Bug 934131 - South Dakota has a centralized hosting
 k12.tn.us
 k12.tx.us
 k12.ut.us
