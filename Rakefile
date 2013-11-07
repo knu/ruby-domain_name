@@ -29,8 +29,9 @@ task :etld_data do
       data = ETLD_DATA_URI.read
     end
     puts 'eTLD database is modified.'
+    date = data.last_modified
     File.write(ETLD_DATA_FILE, data)
-    File.utime Time.now, data.last_modified, ETLD_DATA_FILE
+    File.utime Time.now, date, ETLD_DATA_FILE
     Rake::Task[ETLD_DATA_RB].execute
   rescue OpenURI::HTTPError => e
     if e.io.status.first == '304' # Not Modified
@@ -38,6 +39,17 @@ task :etld_data do
     else
       raise
     end
+  end
+end
+
+namespace :etld_data do
+  task :commit do
+    load ETLD_DATA_RB
+
+    sh 'git', 'commit',
+      ETLD_DATA_FILE,
+      ETLD_DATA_RB,
+      '-m', 'Update the eTLD database to %s.' % DomainName::ETLD_DATA_DATE
   end
 end
 
