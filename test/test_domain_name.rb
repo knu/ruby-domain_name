@@ -105,6 +105,26 @@ class TestDomainName < Test::Unit::TestCase
       ['k12.ak.us', nil, false, 'us', true],
       ['test.k12.ak.us', 'test.k12.ak.us', true, 'us', true],
       ['www.test.k12.ak.us', 'test.k12.ak.us', true, 'us', true],
+      # IDN labels. (modified; currently DomainName always converts U-labels to A-labels)
+      ['食狮.com.cn', 'xn--85x722f.com.cn', true, 'cn', true],
+      ['食狮.公司.cn', 'xn--85x722f.xn--55qx5d.cn', true, 'cn', true],
+      ['www.食狮.公司.cn', 'xn--85x722f.xn--55qx5d.cn', true, 'cn', true],
+      ['shishi.公司.cn', 'shishi.xn--55qx5d.cn', true, 'cn', true],
+      ['公司.cn', nil, false, 'cn', true],
+      ['食狮.中国', 'xn--85x722f.xn--fiqs8s', true, 'xn--fiqs8s', true],
+      ['www.食狮.中国', 'xn--85x722f.xn--fiqs8s', true, 'xn--fiqs8s', true],
+      ['shishi.中国', 'shishi.xn--fiqs8s', true, 'xn--fiqs8s', true],
+      ['中国', nil, false, 'xn--fiqs8s', true],
+      # Same as above, but punycoded.
+      ['xn--85x722f.com.cn', 'xn--85x722f.com.cn', true, 'cn', true],
+      ['xn--85x722f.xn--55qx5d.cn', 'xn--85x722f.xn--55qx5d.cn', true, 'cn', true],
+      ['www.xn--85x722f.xn--55qx5d.cn', 'xn--85x722f.xn--55qx5d.cn', true, 'cn', true],
+      ['shishi.xn--55qx5d.cn', 'shishi.xn--55qx5d.cn', true, 'cn', true],
+      ['xn--55qx5d.cn', nil, false, 'cn', true],
+      ['xn--85x722f.xn--fiqs8s', 'xn--85x722f.xn--fiqs8s', true, 'xn--fiqs8s', true],
+      ['www.xn--85x722f.xn--fiqs8s', 'xn--85x722f.xn--fiqs8s', true, 'xn--fiqs8s', true],
+      ['shishi.xn--fiqs8s', 'shishi.xn--fiqs8s', true, 'xn--fiqs8s', true],
+      ['xn--fiqs8s', nil, false, 'xn--fiqs8s', true],
     ].each { |hostname, domain, canonical, tld, canonical_tld|
       dn = DomainName.new(hostname)
       assert_equal(domain, dn.domain, hostname + ':domain')
