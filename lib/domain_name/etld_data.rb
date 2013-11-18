@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2013-11-15T16:01:28Z'
+  ETLD_DATA_DATE = '2013-11-17T16:01:35Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -820,14 +820,15 @@ class DomainName
     "gov.ie" => 0,
     "il" => -1,
     "im" => 0,
-    "co.im" => 0,
-    "ltd.co.im" => 0,
-    "plc.co.im" => 0,
-    "net.im" => 0,
-    "gov.im" => 0,
-    "org.im" => 0,
-    "nic.im" => 0,
     "ac.im" => 0,
+    "co.im" => 0,
+    "com.im" => 0,
+    "ltd.co.im" => 0,
+    "net.im" => 0,
+    "org.im" => 0,
+    "plc.co.im" => 0,
+    "tt.im" => 0,
+    "tv.im" => 0,
     "in" => 0,
     "co.in" => 0,
     "firm.in" => 0,
