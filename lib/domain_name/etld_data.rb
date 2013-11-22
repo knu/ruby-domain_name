@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2013-11-17T16:01:35Z'
+  ETLD_DATA_DATE = '2013-11-20T04:09:35Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -200,7 +200,6 @@ class DomainName
     "vic.edu.au" => 0,
     "wa.edu.au" => 0,
     "act.gov.au" => 0,
-    "nt.gov.au" => 0,
     "qld.gov.au" => 0,
     "sa.gov.au" => 0,
     "tas.gov.au" => 0,
