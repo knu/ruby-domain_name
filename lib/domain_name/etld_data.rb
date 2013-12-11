@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2013-11-20T04:09:35Z'
+  ETLD_DATA_DATE = '2013-12-03T00:01:48Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -663,10 +663,8 @@ class DomainName
     "gf" => 0,
     "gg" => 0,
     "co.gg" => 0,
-    "org.gg" => 0,
     "net.gg" => 0,
-    "sch.gg" => 0,
-    "gov.gg" => 0,
+    "org.gg" => 0,
     "gh" => 0,
     "com.gh" => 0,
     "edu.gh" => 0,
@@ -1150,10 +1148,8 @@ class DomainName
     "vt.it" => 0,
     "je" => 0,
     "co.je" => 0,
-    "org.je" => 0,
     "net.je" => 0,
-    "sch.je" => 0,
-    "gov.je" => 0,
+    "org.je" => 0,
     "jm" => -1,
     "jo" => 0,
     "com.jo" => 0,
@@ -3140,7 +3136,11 @@ class DomainName
     "mr" => 0,
     "gov.mr" => 0,
     "ms" => 0,
-    "mt" => -1,
+    "mt" => 0,
+    "com.mt" => 0,
+    "edu.mt" => 0,
+    "net.mt" => 0,
+    "org.mt" => 0,
     "mu" => 0,
     "com.mu" => 0,
     "net.mu" => 0,
@@ -5610,7 +5610,6 @@ class DomainName
     "lib.va.us" => 0,
     "lib.wa.us" => 0,
     "lib.wi.us" => 0,
-    "lib.wv.us" => 0,
     "lib.wy.us" => 0,
     "pvt.k12.ma.us" => 0,
     "chtr.k12.ma.us" => 0,
