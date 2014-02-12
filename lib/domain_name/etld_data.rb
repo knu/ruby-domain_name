@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2014-01-31T00:01:13Z'
+  ETLD_DATA_DATE = '2014-02-11T16:01:07Z'
 
   ETLD_DATA = {
     "ac" => 0,
