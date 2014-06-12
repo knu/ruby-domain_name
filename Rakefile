@@ -1,7 +1,7 @@
 require 'bundler/gem_tasks'
 require 'uri'
 
-ETLD_DATA_URI  = URI('http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1')
+ETLD_DATA_URI  = URI('https://publicsuffix.org/list/effective_tld_names.dat')
 ETLD_DATA_FILE = 'data/effective_tld_names.dat'
 ETLD_DATA_RB   = 'lib/domain_name/etld_data.rb'
 
