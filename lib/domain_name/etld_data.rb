@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2015-02-04T19:56:04Z'
+  ETLD_DATA_DATE = '2015-02-18T02:56:08Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -7065,6 +7065,7 @@ class DomainName
     "global.prod.fastly.net" => 0,
     "firebaseapp.com" => 0,
     "flynnhub.com" => 0,
+    "service.gov.uk" => 0,
     "github.io" => 0,
     "githubusercontent.com" => 0,
     "ro.com" => 0,
@@ -7137,9 +7138,11 @@ class DomainName
     "poznan.pl" => 0,
     "wroc.pl" => 0,
     "zakopane.pl" => 0,
-    "rhcloud.com" => 0,
-    "service.gov.uk" => 0,
     "priv.at" => 0,
+    "rhcloud.com" => 0,
+    "sinaapp.com" => 0,
+    "vipsinaapp.com" => 0,
+    "1kapp.com" => 0,
     "gda.pl" => 0,
     "gdansk.pl" => 0,
     "gdynia.pl" => 0,
