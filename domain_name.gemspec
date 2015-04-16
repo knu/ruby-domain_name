@@ -36,6 +36,7 @@ Suffix List.
     # Cap dependency on activesupport with < 4.0 on behalf of
     # shoulda-matchers to satisfy bundler.
     gem.add_development_dependency("activesupport", "< 4.0")
+    gem.add_development_dependency("i18n", "< 0.7.0")
     gem.add_development_dependency("shoulda", "< 3.5.0")
   end
   gem.add_development_dependency("bundler", [">= 1.2.0"])
