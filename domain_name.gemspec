@@ -16,7 +16,7 @@ Suffix List.
   EOS
   gem.summary       = %q{Domain Name manipulation library for Ruby}
   gem.homepage      = "https://github.com/knu/ruby-domain_name"
-  gem.licenses      = ["BSD + MPL 1.1/GPL 2.0/LGPL 2.1"]
+  gem.licenses      = ["BSD-2-Clause", "BSD-3-Clause", "MPL-1.1", "GPL-2.0", "LGPL-2.1"]
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
