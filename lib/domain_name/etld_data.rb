@@ -18,6 +18,12 @@ class DomainName
   end
 
   def self.load_cache
-    @@cache ||= Marshal.load(File.binread(datafile_path %w(cache etld)))
+    return @@cache if @@cache
+
+    if File.respond_to?(:binread)
+      @@cache = Marshal.load(File.binread(datafile_path(%w(cache etld))))
+    else
+      @@cache = Marshal.load(File.open(datafile_path(%w(cache etld)), 'rb') { |f| f.read })
+    end
   end
 end
