@@ -7,23 +7,26 @@ $LOAD_PATH.unshift $basedir + 'lib'
 require 'domain_name'
 require 'set'
 require 'erb'
+require 'yaml'
 
 def main
-  dat_file = $basedir + 'data' + 'effective_tld_names.dat'
-  dir      = $basedir + 'lib' + 'domain_name'
-  erb_file = dir + 'etld_data.rb.erb'
-  rb_file  = dir + 'etld_data.rb'
+  dat_file      = $basedir + 'data/' + 'effective_tld_names.dat'
+  yaml_file     = $basedir + 'lib/data/' + 'etld.yaml'
+  marshall_file = $basedir + 'lib/cache/' + 'etld'
 
   etld_data_date = File.mtime(dat_file)
 
-  File.open(dat_file, 'r:utf-8') { |dat|
-    etld_data = parse(dat)
-    File.open(rb_file, 'w:utf-8') { |rb|
-      File.open(erb_file, 'r:utf-8') { |erb|
-        rb.print ERB.new(erb.read).result(binding)
-      }
-    }
-  }
+  File.open(dat_file, 'r:utf-8') do |dat|
+    etld_data = { 'data_date' => etld_data_date, 'data' => parse(dat) }
+
+    File.open(yaml_file, 'w:utf-8') do |yaml|
+      yaml.write etld_data.to_yaml
+    end
+
+    File.open(marshall_file, 'w+') do |cache|
+      cache.write Marshal.dump(etld_data)
+    end
+  end
 end
 
 def normalize_hostname(domain)

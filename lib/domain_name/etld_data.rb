@@ -1,21 +1,14 @@
 class DomainName
-  ETLD_DATA_DATE = '2015-04-29T23:56:05Z'
-
   @@cache = nil
 
   def self.etld_data
     load_cache unless @@cache
-    @@cache
+    @@cache['data']
   end
 
-  def self.etld_data_from_yaml
-    YAML.load_file(datafile_path(%w(data etld.yaml)))
-  end
-
-  def self.write_marshall_cache_from_yaml
-    File.open(datafile_path(%w(cache etld)), 'w+') do |file|
-      file.write Marshal.dump(etld_data_from_yaml)
-    end
+  def self.etld_data_date
+    load_cache unless @@cache
+    @@cache['data_date']
   end
 
   private

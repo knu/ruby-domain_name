@@ -30,6 +30,9 @@ Suffix List.
 
   gem.add_runtime_dependency("unf", ["< 1.0.0", ">= 0.0.5"])
   gem.add_development_dependency("test-unit", "~> 2.5.5")
+  gem.add_development_dependency("derailed", "~> 0.1")
+  gem.add_development_dependency("thor")
+
   if RUBY_VERSION >= "1.9"
     gem.add_development_dependency("shoulda", ">= 0")
   else
