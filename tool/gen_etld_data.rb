@@ -20,7 +20,7 @@ def main
     etld_data = { 'data_date' => etld_data_date, 'data' => parse(dat) }
 
     File.open(yaml_file, 'w:utf-8') do |yaml|
-      yaml.write etld_data.to_yaml
+      YAML.dump(etld_data, yaml)
     end
 
     File.open(marshall_file, 'w+') do |cache|
