@@ -12,7 +12,6 @@ require 'yaml'
 def main
   dat_file      = $basedir.join('data', 'effective_tld_names.dat')
   yaml_file     = $basedir.join('lib', 'data', 'etld.yaml')
-  marshall_file = $basedir.join('lib', 'cache', 'etld')
 
   etld_data_date = File.mtime(dat_file)
 
@@ -21,10 +20,6 @@ def main
 
     File.open(yaml_file, 'w:utf-8') do |yaml|
       YAML.dump(etld_data, yaml)
-    end
-
-    File.open(marshall_file, 'w+') do |cache|
-      cache.write Marshal.dump(etld_data)
     end
   end
 end
