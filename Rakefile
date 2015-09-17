@@ -23,7 +23,7 @@ task :etld_data do
     begin
       load File.join('.', ETLD_DATA_RB)
       data = ETLD_DATA_URI.read(
-        'If-Modified-Since' => Time.parse(DomainName::ETLD_DATA_DATE).rfc2822
+        'If-Modified-Since' => DomainName.etld_data_date.rfc2822
       )
     rescue LoadError, NameError
       data = ETLD_DATA_URI.read
@@ -49,13 +49,12 @@ namespace :etld_data do
     sh 'git', 'commit',
       ETLD_DATA_FILE,
       ETLD_DATA_RB,
-      '-m', 'Update the eTLD database to %s.' % DomainName::ETLD_DATA_DATE
+      '-m', 'Update the eTLD database to %s.' % DomainName.etld_data_date
   end
 end
 
 file ETLD_DATA_RB => [
   ETLD_DATA_FILE,
-  ETLD_DATA_RB + '.erb',
   'tool/gen_etld_data.rb'
 ] do
   ruby 'tool/gen_etld_data.rb'
