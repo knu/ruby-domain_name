@@ -23,7 +23,7 @@ task :etld_data do
     begin
       load File.join('.', ETLD_DATA_RB)
       data = ETLD_DATA_URI.read(
-        'If-Modified-Since' => Time.parse(DomainName.etld_data_date).rfc2822
+        'If-Modified-Since' => DomainName.etld_data_date.rfc2822
       )
     rescue LoadError, NameError
       data = ETLD_DATA_URI.read
@@ -53,7 +53,12 @@ namespace :etld_data do
   end
 end
 
-ruby 'tool/gen_etld_data.rb'
+file ETLD_DATA_RB => [
+  ETLD_DATA_FILE,
+  'tool/gen_etld_data.rb'
+] do
+  ruby 'tool/gen_etld_data.rb'
+end
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|

@@ -10,9 +10,9 @@ require 'erb'
 require 'yaml'
 
 def main
-  dat_file      = $basedir + 'data/' + 'effective_tld_names.dat'
-  yaml_file     = $basedir + 'lib/data/' + 'etld.yaml'
-  marshall_file = $basedir + 'lib/cache/' + 'etld'
+  dat_file      = $basedir.join('data', 'effective_tld_names.dat')
+  yaml_file     = $basedir.join('lib', 'data', 'etld.yaml')
+  marshall_file = $basedir.join('lib', 'cache', 'etld')
 
   etld_data_date = File.mtime(dat_file)
 
