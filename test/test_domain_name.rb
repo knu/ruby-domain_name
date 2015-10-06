@@ -67,10 +67,10 @@ class TestDomainName < Test::Unit::TestCase
       ['a.b.example.uk.com', 'example.uk.com', true, 'com', true],
       ['test.ac', 'test.ac', true, 'ac', true],
       # TLD with only 1 (wildcard) rule.
-      ['cy', nil, false, 'cy', true],
-      ['c.cy', nil, false, 'cy', true],
-      ['b.c.cy', 'b.c.cy', true, 'cy', true],
-      ['a.b.c.cy', 'b.c.cy', true, 'cy', true],
+      ['bd', nil, false, 'bd', true],
+      ['c.bd', nil, false, 'bd', true],
+      ['b.c.bd', 'b.c.bd', true, 'bd', true],
+      ['a.b.c.bd', 'b.c.bd', true, 'bd', true],
       # More complex TLD.
       ['jp', nil, false, 'jp', true],
       ['test.jp', 'test.jp', true, 'jp', true],
