@@ -4,6 +4,7 @@ require 'uri'
 ETLD_DATA_URI  = URI('https://publicsuffix.org/list/effective_tld_names.dat')
 ETLD_DATA_FILE = 'data/effective_tld_names.dat'
 ETLD_DATA_RB   = 'lib/domain_name/etld_data.rb'
+VERSION_RB     = 'lib/domain_name/version.rb'
 
 task :default => :test
 
@@ -32,6 +33,14 @@ task :etld_data do
     date = data.last_modified
     File.write(ETLD_DATA_FILE, data)
     File.utime Time.now, date, ETLD_DATA_FILE
+    if new_version = DomainName::VERSION.dup.sub!(/(?<=\A|\.)\d{8}\b(?=\z|\.)/, date.strftime('%Y%m%d'))
+      File.open(VERSION_RB, 'r+') { |rb|
+        content = rb.read
+        rb.rewind
+        rb.write(content.sub(/(?<=^  VERSION = ')#{Regexp.quote(DomainName::VERSION)}(?='$)/, new_version))
+        rb.truncate(rb.tell)
+      }
+    end
     Rake::Task[ETLD_DATA_RB].execute
   rescue OpenURI::HTTPError => e
     if e.io.status.first == '304' # Not Modified
@@ -49,6 +58,7 @@ namespace :etld_data do
     sh 'git', 'commit',
       ETLD_DATA_FILE,
       ETLD_DATA_RB,
+      VERSION_RB,
       '-m', 'Update the eTLD database to %s.' % DomainName::ETLD_DATA_DATE
   end
 end
