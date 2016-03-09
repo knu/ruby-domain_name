@@ -33,7 +33,7 @@ task :etld_data do
     date = data.last_modified
     File.write(ETLD_DATA_FILE, data)
     File.utime Time.now, date, ETLD_DATA_FILE
-    if new_version = DomainName::VERSION.dup.sub!(/(?<=\A|\.)\d{8}\b(?=\z|\.)/, date.strftime('%Y%m%d'))
+    if new_version = DomainName::VERSION.dup.sub!(/\b\d{8}\b/, date.strftime('%Y%m%d'))
       File.open(VERSION_RB, 'r+') { |rb|
         content = rb.read
         rb.rewind
