@@ -6933,7 +6933,7 @@ web.za
 *.zw
 
 
-// List of new gTLDs imported from https://newgtlds.icann.org/newgtlds.csv on 2016-01-04T22:39:54Z
+// List of new gTLDs imported from https://newgtlds.icann.org/newgtlds.csv on 2016-03-01T00:46:32Z
 
 // aaa : 2015-02-26 American Automobile Association, Inc.
 aaa
@@ -7820,9 +7820,6 @@ doha
 // domains : 2013-10-17 Sugar Cross, LLC
 domains
 
-// doosan : 2014-04-03 Doosan Corporation
-doosan
-
 // dot : 2015-05-21 Dish DBS Corporation
 dot
 
@@ -8111,6 +8108,9 @@ fujitsu
 // fujixerox : 2015-07-23 Xerox DNHC LLC
 fujixerox
 
+// fun : 2016-01-14 Oriental Trading Company, Inc.
+fun
+
 // fund : 2014-03-20 John Castle, LLC
 fund
 
@@ -8197,6 +8197,9 @@ globo
 
 // gmail : 2014-05-01 Charleston Road Registry Inc.
 gmail
+
+// gmbh : 2016-01-29 Extra Dynamite, LLC
+gmbh
 
 // gmo : 2014-01-09 GMO Internet, Inc.
 gmo
@@ -9785,6 +9788,9 @@ storage
 // store : 2015-04-09 DotStore Inc.
 store
 
+// stream : 2016-01-08 dot Stream Limited
+stream
+
 // studio : 2015-02-11
 studio
 
@@ -10685,10 +10691,6 @@ za.com
 // Submitted by Gavin Brown <gavin.brown@centralnic.com>
 africa.com
 
-// Citrix : https://citrix.com
-// Submitted by Alex Stoddard <alex.stoddard@citrix.com>
-xenapponazure.com
-
 // iDOT Services Limited : http://www.domain.gr.com
 // Submitted by Gavin Brown <gavin.brown@centralnic.com>
 gr.com
@@ -10707,6 +10709,10 @@ co.com
 
 // c.la : http://www.c.la/
 c.la
+
+// Citrix : https://citrix.com
+// Submitted by Alex Stoddard <alex.stoddard@citrix.com>
+xenapponazure.com
 
 // cloudControl : https://www.cloudcontrol.com/
 // Submitted by Tobias Wilken <tw@cloudcontrol.com>
@@ -10739,6 +10745,19 @@ co.no
 // Cupcake : https://cupcake.io/
 // Submitted by Jonathan Rudenberg <jonathan@cupcake.io>
 cupcake.is
+
+// cyon GmbH : https://www.cyon.ch/
+// Submitted by Dominic Luechinger <dol@cyon.ch>
+cyon.link
+cyon.site
+
+// Dansk.net : http://www.dansk.net/
+// Submitted by Anani Voule <digital@digital.co.dk>
+biz.dk
+co.dk
+firm.dk
+reg.dk
+store.dk
 
 // DreamHost : http://www.dreamhost.com/
 // Submitted by Andrew Farmer <andrew.farmer@dreamhost.com>
@@ -11096,6 +11115,10 @@ tr.eu.org
 uk.eu.org
 us.eu.org
 
+// Facebook, Inc.
+// Submitted by Peter Ruibal <public-suffix@fb.com>
+apps.fbsbx.com
+
 // Fastly Inc. http://www.fastly.com/
 // Submitted by Vladimir Vuksan <vladimir@fastly.com>
 a.ssl.fastly.net
@@ -11117,9 +11140,14 @@ flynnhub.com
 service.gov.uk
 
 // GitHub, Inc.
-// Submitted by Ben Toews <btoews@github.com>
+// Submitted by Patrick Toomey <security@github.com>
 github.io
 githubusercontent.com
+githubcloud.com
+*.api.githubcloud.com
+*.ext.githubcloud.com
+gist.githubcloud.com
+*.githubcloudusercontent.com
 
 // GlobeHosting, Inc.
 // Submitted by Zoltan Egresi <egresi@globehosting.com>
