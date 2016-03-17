@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2016-03-09T09:52:02Z'
+  ETLD_DATA_DATE = '2016-03-10T21:22:02Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -7827,7 +7827,7 @@ class DomainName
     "poznan.pl" => 0,
     "wroc.pl" => 0,
     "zakopane.pl" => 0,
-    "pantheon.io" => 0,
+    "pantheonsite.io" => 0,
     "gotpantheon.com" => 0,
     "xen.prgmr.com" => 0,
     "priv.at" => 0,
