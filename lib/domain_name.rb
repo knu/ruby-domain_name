@@ -111,10 +111,10 @@ class DomainName
       loop {
         case etld_data[parent]
         when 0
-          @domain = domain if domain
+          @domain = domain
           return
         when -1
-          @domain = subdomain if subdomain
+          @domain = subdomain
           return
         when 1
           @domain = parent
