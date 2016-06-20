@@ -8005,8 +8005,4 @@ class DomainName
     "za.net" => 0,
     "za.org" => 0,
   }
-
-  def self.etld_data
-    ETLD_DATA
-  end
 end

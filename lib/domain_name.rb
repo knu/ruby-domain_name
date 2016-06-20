@@ -7,13 +7,15 @@
 
 require 'domain_name/version'
 require 'domain_name/punycode'
-require 'domain_name/etld_data'
 require 'unf'
 require 'ipaddr'
 
 # Represents a domain name ready for extracting its registered domain
 # and TLD.
 class DomainName
+  autoload :ETLD_DATA_DATE,	'domain_name/etld_data'
+  autoload :ETLD_DATA,		'domain_name/etld_data'
+
   # The full host name normalized, ASCII-ized and downcased using the
   # Unicode NFC rules and the Punycode algorithm.  If initialized with
   # an IP address, the string representation of the IP address
@@ -283,6 +285,10 @@ class DomainName
   end
 
   class << self
+    def etld_data
+      ETLD_DATA
+    end
+
     # Normalizes a _domain_ using the Punycode algorithm as necessary.
     # The result will be a downcased, ASCII-only string.
     def normalize(domain)
