@@ -5,6 +5,7 @@
 # Copyright (C) 2011, 2012, 2013 Akinori MUSHA, All rights reserved.
 #
 
+require 'yaml'
 require 'domain_name/version'
 require 'domain_name/punycode'
 require 'domain_name/etld_data'
