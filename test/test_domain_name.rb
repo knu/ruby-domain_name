@@ -3,7 +3,7 @@ require 'helper'
 require 'ipaddr'
 
 class TestDomainName < Test::Unit::TestCase
-  should "raise ArgumentError if hostname starts with a dot" do
+  test "raise ArgumentError if hostname starts with a dot" do
     [
       # Leading dot.
       '.com',
@@ -15,7 +15,7 @@ class TestDomainName < Test::Unit::TestCase
     }
   end
 
-  should "accept a String-alike for initialization" do
+  test "accept a String-alike for initialization" do
     Object.new.tap { |obj|
       def obj.to_str
         "Example.org"
@@ -35,7 +35,7 @@ class TestDomainName < Test::Unit::TestCase
     }
   end
 
-  should "parse canonical domain names correctly" do
+  test "parse canonical domain names correctly" do
     [
       # Mixed case.
       ['COM', nil, false, 'com', true],
@@ -134,7 +134,7 @@ class TestDomainName < Test::Unit::TestCase
     }
   end
 
-  should "compare hostnames correctly" do
+  test "compare hostnames correctly" do
     [
       ["foo.com", "abc.foo.com", 1],
       ["COM", "abc.foo.com", 1],
@@ -180,7 +180,7 @@ class TestDomainName < Test::Unit::TestCase
     }
   end
 
-  should "check cookie domain correctly" do
+  test "check cookie domain correctly" do
     {
       'com' => [
         ['com', false],
@@ -255,7 +255,7 @@ class TestDomainName < Test::Unit::TestCase
     }
   end
 
-  should "parse IPv4 addresseses" do
+  test "parse IPv4 addresseses" do
     a = '192.168.10.20'
     dn = DomainName(a)
     assert_equal(a, dn.hostname)
@@ -270,7 +270,7 @@ class TestDomainName < Test::Unit::TestCase
     assert_equal(nil, dn.superdomain)
   end
 
-  should "parse IPv6 addresseses" do
+  test "parse IPv6 addresseses" do
     a = '2001:200:dff:fff1:216:3eff:feb1:44d7'
     b = '2001:0200:0dff:fff1:0216:3eff:feb1:44d7'
     [b, b.upcase, "[#{b}]", "[#{b.upcase}]"].each { |host|
@@ -289,7 +289,7 @@ class TestDomainName < Test::Unit::TestCase
     }
   end
 
-  should "get superdomain" do
+  test "get superdomain" do
     [
       %w[www.sub.example.local sub.example.local example.local local],
       %w[www.sub.example.com sub.example.com example.com com],
@@ -304,7 +304,7 @@ class TestDomainName < Test::Unit::TestCase
     }
   end
 
-  should "have idn methods" do
+  test "have idn methods" do
     dn = DomainName("金八先生.B組.3年.日本語ドメイン名Example.日本")
 
     assert_equal "xn--44q1cv48kq8x.xn--b-gf6c.xn--3-pj3b.xn--example-6q4fyliikhk162btq3b2zd4y2o.xn--wgv71a", dn.hostname

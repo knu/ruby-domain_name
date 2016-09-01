@@ -1,7 +1,7 @@
 require 'helper'
 
 class TestDomainName < Test::Unit::TestCase
-  should "encode labels just as listed in RFC 3492 #7.1 (slightly modified)" do
+  test "encode labels just as listed in RFC 3492 #7.1 (slightly modified)" do
     [
       ['(A) Arabic (Egyptian)',
         [0x0644, 0x064A, 0x0647, 0x0645, 0x0627, 0x0628, 0x062A, 0x0643, 0x0644,
