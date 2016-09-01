@@ -9,7 +9,7 @@ require 'set'
 require 'erb'
 
 def main
-  dat_file = $basedir + 'data' + 'effective_tld_names.dat'
+  dat_file = $basedir + 'data' + 'public_suffix_list.dat'
   dir      = $basedir + 'lib' + 'domain_name'
   erb_file = dir + 'etld_data.rb.erb'
   rb_file  = dir + 'etld_data.rb'

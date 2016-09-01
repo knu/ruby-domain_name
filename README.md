@@ -53,9 +53,7 @@ References
 
 * [RFC 5893](http://tools.ietf.org/html/rfc5892)
 
-* [Public Suffix List](http://publicsuffix.org/list/)
-
-* [Effective TLD Names List](http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1)
+* [Public Suffix List](https://publicsuffix.org/list/)
 
 License
 -------

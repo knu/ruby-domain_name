@@ -1,8 +1,7 @@
 require 'bundler/gem_tasks'
 require 'uri'
-
-ETLD_DATA_URI  = URI('https://publicsuffix.org/list/effective_tld_names.dat')
-ETLD_DATA_FILE = 'data/effective_tld_names.dat'
+ETLD_DATA_URI  = URI('https://publicsuffix.org/list/public_suffix_list.dat')
+ETLD_DATA_FILE = 'data/public_suffix_list.dat'
 ETLD_DATA_RB   = 'lib/domain_name/etld_data.rb'
 VERSION_RB     = 'lib/domain_name/version.rb'
 
