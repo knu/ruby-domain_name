@@ -63,5 +63,5 @@ Copyright (c) 2011-2016 Akinori MUSHA
 Licensed under the 2-clause BSD license.
 
 Some portion of this library is copyrighted by third parties and
-licensed under MPL 1.1/GPL 2.0/LGPL 2.1 or 3-clause BSD license,
+licensed under MPL 2.0 or 3-clause BSD license,
 See `LICENSE.txt` for details.
