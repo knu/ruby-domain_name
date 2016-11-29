@@ -1,3 +1,3 @@
 class DomainName
-  VERSION = '0.5.20161021'
+  VERSION = '0.5.20161129'
 end
