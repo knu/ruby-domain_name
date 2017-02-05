@@ -291,13 +291,11 @@ class DomainName
     # The result will be a downcased, ASCII-only string.
     if RUBY_VERSION >= '2.2'
       def normalize(domain)
-        domain.chomp!(DOT)        
-        DomainName::Punycode.encode_hostname(domain.unicode_normalize).downcase
+        DomainName::Punycode.encode_hostname(domain.chomp(DOT).unicode_normalize).downcase
       end
     else
       def normalize(domain)
-        domain.chomp!(DOT)
-        DomainName::Punycode.encode_hostname(domain.to_nfc).downcase
+        DomainName::Punycode.encode_hostname(domain.chomp(DOT).to_nfc).downcase
       end
     end
   end
