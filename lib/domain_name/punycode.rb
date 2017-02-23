@@ -2,7 +2,7 @@
 #--
 # punycode.rb - PunyCode encoder for the Domain Name library
 #
-# Copyright (C) 2011, 2012, 2013 Akinori MUSHA, All rights reserved.
+# Copyright (C) 2011-2017 Akinori MUSHA, All rights reserved.
 #
 # Ported from puny.c, a part of VeriSign XCode (encode/decode) IDN
 # Library.
