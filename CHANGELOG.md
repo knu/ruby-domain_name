@@ -1,6 +1,11 @@
 # Change Log
 
-## [v0.5.20161129](https://github.com/knu/ruby-domain_name/tree/v0.5.20170223) (2017-02-23)
+## [v0.5.20170404](https://github.com/knu/ruby-domain_name/tree/v0.5.20170404) (2017-04-04)
+[Full Changelog](https://github.com/knu/ruby-domain_name/compare/v0.5.20170223...v0.5.20170404)
+
+- Update the eTLD database to 2017-04-04T20:20:25Z
+
+## [v0.5.20170223](https://github.com/knu/ruby-domain_name/tree/v0.5.20170223) (2017-02-23)
 [Full Changelog](https://github.com/knu/ruby-domain_name/compare/v0.5.20161129...v0.5.20170223)
 
 - Update the eTLD database to 2017-02-23T00:52:11Z
