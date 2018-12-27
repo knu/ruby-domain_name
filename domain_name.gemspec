@@ -19,8 +19,7 @@ Suffix List.
   gem.licenses      = ["BSD-2-Clause", "BSD-3-Clause", "MPL-2.0"]
 
   gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  gem.test_files    = gem.files.grep(%r{^test/})
   gem.require_paths = ["lib"]
 
   gem.extra_rdoc_files = [
@@ -28,7 +27,8 @@ Suffix List.
     "README.md"
   ]
 
-  gem.add_runtime_dependency("unf", ["< 1.0.0", ">= 0.0.5"])
+  gem.required_ruby_version = ">= 2.2"
+
   gem.add_development_dependency("test-unit", "~> 2.5.5")
   gem.add_development_dependency("bundler", [">= 1.2.0"])
   gem.add_development_dependency("rake", [">= 0.9.2.2", *("< 11" if RUBY_VERSION < "1.9")])
