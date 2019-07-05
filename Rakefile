@@ -57,11 +57,9 @@ namespace :etld_data do
       exit
     end
 
-    load ETLD_DATA_RB
-
     prev = `ruby -e "$(git cat-file -p @:lib/domain_name/version.rb); puts DomainName::VERSION"`.chomp
-    curr = DomainName::VERSION
-    timestamp = DomainName::ETLD_DATA_DATE
+    curr = `ruby -e "load 'lib/domain_name/version.rb'; puts DomainName::VERSION"`.chomp
+    timestamp = File.mtime(ETLD_DATA_FILE).utc
 
     File.open('CHANGELOG.md', 'r+') do |f|
       lines = f.readlines
