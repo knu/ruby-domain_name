@@ -80,6 +80,8 @@ namespace :etld_data do
       ETLD_DATA_RB,
       VERSION_RB,
       '-m', 'Update the eTLD database to %s.' % timestamp
+
+    sh 'git', 'tag', "v#{curr}"
   end
 end
 
