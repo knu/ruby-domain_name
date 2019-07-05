@@ -52,6 +52,11 @@ end
 
 namespace :etld_data do
   task :commit do
+    if system(*%W[git diff --exit-code --quiet], ETLD_DATA_FILE)
+      warn "Nothing to commit."
+      exit
+    end
+
     load ETLD_DATA_RB
 
     prev = `ruby -e "$(git cat-file -p @:lib/domain_name/version.rb); puts DomainName::VERSION"`.chomp
