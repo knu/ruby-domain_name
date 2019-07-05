@@ -54,11 +54,29 @@ namespace :etld_data do
   task :commit do
     load ETLD_DATA_RB
 
+    prev = `ruby -e "$(git cat-file -p @:lib/domain_name/version.rb); puts DomainName::VERSION"`.chomp
+    curr = DomainName::VERSION
+    timestamp = DomainName::ETLD_DATA_DATE
+
+    File.open('CHANGELOG.md', 'r+') do |f|
+      lines = f.readlines
+      lines.insert(2, <<~EOF)
+## [v#{curr}](https://github.com/knu/ruby-domain_name/tree/v#{curr}) (#{Time.now.strftime('%F')})
+[Full Changelog](https://github.com/knu/ruby-domain_name/compare/v#{prev}...v#{curr})
+
+- Update the eTLD database to #{timestamp}
+
+      EOF
+      f.rewind
+      f.puts lines
+    end
+
     sh 'git', 'commit',
+      'CHANGELOG.md',
       ETLD_DATA_FILE,
       ETLD_DATA_RB,
       VERSION_RB,
-      '-m', 'Update the eTLD database to %s.' % DomainName::ETLD_DATA_DATE
+      '-m', 'Update the eTLD database to %s.' % timestamp
   end
 end
 
