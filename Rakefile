@@ -63,7 +63,7 @@ namespace :etld_data do
 
     File.open('CHANGELOG.md', 'r+') do |f|
       lines = f.readlines
-      lines.insert(2, <<~EOF)
+      lines.insert(2, <<-EOF)
 ## [v#{curr}](https://github.com/knu/ruby-domain_name/tree/v#{curr}) (#{Time.now.strftime('%F')})
 [Full Changelog](https://github.com/knu/ruby-domain_name/compare/v#{prev}...v#{curr})
 
