@@ -52,7 +52,7 @@ end
 
 namespace :etld_data do
   task :commit do
-    if system(*%W[git diff --exit-code --quiet], ETLD_DATA_FILE)
+    if system('git', 'diff', '--exit-code', '--quiet', ETLD_DATA_FILE)
       warn "Nothing to commit."
       exit
     end
