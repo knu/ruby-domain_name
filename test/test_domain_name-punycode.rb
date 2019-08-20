@@ -91,7 +91,12 @@ class TestDomainName < Test::Unit::TestCase
         '-> $1.00 <--']
     ].each { |title, cps, punycode|
       assert_equal punycode, DomainName::Punycode.encode(cps.pack('U*')), title
-      assert_equal cps.pack('U*').to_nfc, DomainName::Punycode.decode(punycode), title
+      cps_norm = if RUBY_VERSION >= '2.2'
+          cps.pack('U*').unicode_normalize
+        else
+          cps.pack('U*').to_nfc
+        end
+      assert_equal cps_norm, DomainName::Punycode.decode(punycode), title
     }
   end
 end
