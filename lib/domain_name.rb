@@ -8,7 +8,7 @@
 require 'domain_name/version'
 require 'domain_name/punycode'
 require 'domain_name/etld_data'
-require 'unf'
+require 'unf' if RUBY_VERSION < "2.2"
 require 'ipaddr'
 
 # Represents a domain name ready for extracting its registered domain
@@ -286,7 +286,11 @@ class DomainName
     # Normalizes a _domain_ using the Punycode algorithm as necessary.
     # The result will be a downcased, ASCII-only string.
     def normalize(domain)
-      DomainName::Punycode.encode_hostname(domain.chomp(DOT).to_nfc).downcase
+      if RUBY_VERSION >= '2.2'
+        DomainName::Punycode.encode_hostname(domain.chomp(DOT).unicode_normalize).downcase
+      else
+        DomainName::Punycode.encode_hostname(domain.chomp(DOT).to_nfc).downcase
+      end
     end
   end
 end
