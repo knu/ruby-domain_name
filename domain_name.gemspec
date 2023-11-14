@@ -6,6 +6,7 @@ require 'domain_name/version'
 Gem::Specification.new do |gem|
   gem.name          = "domain_name"
   gem.version       = DomainName::VERSION
+  gem.required_ruby_version = ">= 2.7.0"
   gem.authors       = ["Akinori MUSHA"]
   gem.email         = ["knu@idaemons.org"]
   gem.description   = <<-'EOS'
@@ -28,9 +29,8 @@ Suffix List.
     "README.md"
   ]
 
-  gem.add_runtime_dependency("unf", ["< 1.0.0", ">= 0.0.5"])
-  gem.add_development_dependency("test-unit", "~> 2.5.5")
+  gem.add_development_dependency("test-unit")
   gem.add_development_dependency("bundler", [">= 1.2.0"])
-  gem.add_development_dependency("rake", [">= 0.9.2.2", *("< 11" if RUBY_VERSION < "1.9")])
+  gem.add_development_dependency("rake")
   gem.add_development_dependency("rdoc", [">= 2.4.2"])
 end
