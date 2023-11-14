@@ -1,5 +1,7 @@
 # Change Log
 
+- Require Ruby >=2.7 and drop the dependency on unf
+
 ## [v0.5.20190701](https://github.com/knu/ruby-domain_name/tree/v0.5.20190701) (2019-07-05)
 [Full Changelog](https://github.com/knu/ruby-domain_name/compare/v0.5.20180417...v0.5.20190701)
 
