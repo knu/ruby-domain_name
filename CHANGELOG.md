@@ -1,7 +1,7 @@
 # Change Log
 
 ## [v0.6.20231109](https://github.com/knu/ruby-domain_name/tree/v0.6.20231109) (2023-11-14)
-[Full Changelog](https://github.com/knu/ruby-domain_name/compare/v0.6.20190701...v0.6.20231109)
+[Full Changelog](https://github.com/knu/ruby-domain_name/compare/v0.5.20190701...v0.6.20231109)
 
 - Update the eTLD database to 2023-11-09 00:10:10 UTC
 
