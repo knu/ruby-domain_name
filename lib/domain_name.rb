@@ -283,9 +283,13 @@ class DomainName
 
   class << self
     # Normalizes a _domain_ using the Punycode algorithm as necessary.
+    # Input must be strictly ASCII-only or unicode.
     # The result will be a downcased, ASCII-only string.
     def normalize(domain)
-      DomainName::Punycode.encode_hostname(domain.chomp(DOT).unicode_normalize(:nfc)).downcase
+      chomped = domain.chomp(DOT)
+      normalized = chomped.ascii_only? ? chomped : chomped.unicode_normalize(:nfc)
+
+      DomainName::Punycode.encode_hostname(normalized).downcase
     end
   end
 end

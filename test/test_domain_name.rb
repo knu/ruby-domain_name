@@ -35,6 +35,10 @@ class TestDomainName < Test::Unit::TestCase
     }
   end
 
+  test "accept ASCII-only 'binary' encoded hostnames" do
+    assert_equal "example.com", DomainName.new("example.com".force_encoding("ASCII-8BIT")).hostname
+  end
+
   test "parse canonical domain names correctly" do
     [
       # Mixed case.
