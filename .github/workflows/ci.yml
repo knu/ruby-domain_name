@@ -12,7 +12,9 @@ jobs:
     with:
       engine: cruby
       min_version: 2.7
+
   test:
+    needs: ruby-versions
     strategy:
       fail-fast: false
       matrix:
