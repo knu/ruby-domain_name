@@ -1,8 +1,10 @@
 # Changelog
 
-## [Unreleased](https://github.com/knu/ruby-domain_name/tree/HEAD)
+## [v0.6.20240107](https://github.com/knu/ruby-domain_name/tree/v0.6.20240107) (2024-01-09)
 
-[Full Changelog](https://github.com/knu/ruby-domain_name/compare/v0.6.20231109...HEAD)
+[Full Changelog](https://github.com/knu/ruby-domain_name/compare/v0.6.20231109...v0.6.20240107)
+
+- Update the eTLD database to 2024-01-07 11:25:45 UTC
 
 **Closed issues:**
 

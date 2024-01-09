@@ -1,5 +1,5 @@
 class DomainName
-  ETLD_DATA_DATE = '2023-11-09T00:10:10Z'
+  ETLD_DATA_DATE = '2024-01-07T11:25:45Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -6014,6 +6014,7 @@ class DomainName
     "democrat" => 0,
     "dental" => 0,
     "dentist" => 0,
+    "desi" => 0,
     "design" => 0,
     "dev" => 0,
     "dhl" => 0,
@@ -6058,7 +6059,6 @@ class DomainName
     "erni" => 0,
     "esq" => 0,
     "estate" => 0,
-    "etisalat" => 0,
     "eurovision" => 0,
     "eus" => 0,
     "events" => 0,
@@ -6558,7 +6558,6 @@ class DomainName
     "saxo" => 0,
     "sbi" => 0,
     "sbs" => 0,
-    "sca" => 0,
     "scb" => 0,
     "schaeffler" => 0,
     "schmidt" => 0,
@@ -6728,7 +6727,6 @@ class DomainName
     "vivo" => 0,
     "vlaanderen" => 0,
     "vodka" => 0,
-    "volkswagen" => 0,
     "volvo" => 0,
     "vote" => 0,
     "voting" => 0,
@@ -6746,6 +6744,7 @@ class DomainName
     "webcam" => 0,
     "weber" => 0,
     "website" => 0,
+    "wed" => 0,
     "wedding" => 0,
     "weibo" => 0,
     "weir" => 0,
@@ -6829,7 +6828,6 @@ class DomainName
     "xn--kput3i" => 0,
     "xn--mgba3a3ejt" => 0,
     "xn--mgba7c0bbn0a" => 0,
-    "xn--mgbaakc7dvf" => 0,
     "xn--mgbab2bd" => 0,
     "xn--mgbca7dzdo" => 0,
     "xn--mgbi4ecexp" => 0,
@@ -8455,7 +8453,6 @@ class DomainName
     "cloudapps.digital" => 0,
     "london.cloudapps.digital" => 0,
     "pymnt.uk" => 0,
-    "homeoffice.gov.uk" => 0,
     "ro.im" => 0,
     "goip.de" => 0,
     "run.app" => 0,
