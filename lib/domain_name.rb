@@ -87,8 +87,8 @@ class DomainName
       @uri_host = @hostname = @ipaddr.to_s
       @domain = @tld = nil
       return
-    when /\A([0-9A-Fa-f:]*:[0-9A-Fa-f:]*:[0-9A-Fa-f:]*)\z/,
-      /\A\[([0-9A-Fa-f:]*:[0-9A-Fa-f:]*:[0-9A-Fa-f:]*)\]\z/
+    when /\A([0-9A-Fa-f:.]*:[0-9A-Fa-f:.]*:[0-9A-Fa-f:.]*)\z/,
+      /\A\[([0-9A-Fa-f:.]*:[0-9A-Fa-f:.]*:[0-9A-Fa-f:.]*)\]\z/
       @ipaddr = IPAddr.new($1)
       @hostname = @ipaddr.to_s
       @uri_host = "[#{@hostname}]"
