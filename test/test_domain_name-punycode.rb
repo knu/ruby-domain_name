@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'helper'
 
 class TestDomainName < Test::Unit::TestCase
@@ -37,7 +39,7 @@ class TestDomainName < Test::Unit::TestCase
         [0xC138, 0xACC4, 0xC758, 0xBAA8, 0xB4E0, 0xC0AC, 0xB78C, 0xB4E4, 0xC774,
           0xD55C, 0xAD6D, 0xC5B4, 0xB97C, 0xC774, 0xD574, 0xD55C, 0xB2E4, 0xBA74,
           0xC5BC, 0xB9C8, 0xB098, 0xC88B, 0xC744, 0xAE4C],
-        '989aomsvi5e83db1d2a355cv1e0vak1dwrv93d5xbh15a0dt30a5j' <<
+        '989aomsvi5e83db1d2a355cv1e0vak1dwrv93d5xbh15a0dt30a5j' +
         'psd879ccm6fea98c'],
       ['(I) Russian (Cyrillic)',
         [0x043F, 0x043E, 0x0447, 0x0435, 0x043C, 0x0443, 0x0436, 0x0435, 0x043E,
@@ -52,7 +54,7 @@ class TestDomainName < Test::Unit::TestCase
           0x0062, 0x006C, 0x0061, 0x0072, 0x0065, 0x006E, 0x0045, 0x0073, 0x0070,
           0x0061, 0x00F1, 0x006F, 0x006C],
         'PorqunopuedensimplementehablarenEspaol-fmd56a'],
-      ['(K) Vietnamese: T<adotbelow>isaoh<odotbelow>kh<ocirc>ngth<ecirchookabove>ch' <<
+      ['(K) Vietnamese: T<adotbelow>isaoh<odotbelow>kh<ocirc>ngth<ecirchookabove>ch' +
         '<ihookabove>n<oacute>iti<ecircacute>ngVi<ecircdotbelow>t',
         [0x0054, 0x1EA1, 0x0069, 0x0073, 0x0061, 0x006F, 0x0068, 0x1ECD, 0x006B,
           0x0068, 0x00F4, 0x006E, 0x0067, 0x0074, 0x0068, 0x1EC3, 0x0063, 0x0068,

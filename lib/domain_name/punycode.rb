@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# frozen_string_literal: true
 #--
 # punycode.rb - PunyCode encoder for the Domain Name library
 #
@@ -57,7 +57,7 @@ class DomainName
     DAMP = 700
     INITIAL_BIAS = 72
     INITIAL_N = 0x80
-    DELIMITER = '-'.freeze
+    DELIMITER = '-'
 
     MAXINT = (1 << 32) - 1
 
@@ -89,8 +89,8 @@ class DomainName
       # 26..35 map to ASCII 0..9
     }
 
-    DOT = '.'.freeze
-    PREFIX = 'xn--'.freeze
+    DOT = '.'
+    PREFIX = 'xn--'
 
     # Most errors we raise are basically kind of ArgumentError.
     class ArgumentError < ::ArgumentError; end
@@ -100,7 +100,7 @@ class DomainName
       # Encode a +string+ in Punycode
       def encode(string)
         input = string.unpack('U*')
-        output = ''
+        output = +''
 
         # Initialize the state
         n = INITIAL_N
@@ -275,7 +275,7 @@ class DomainName
       # Decode a hostname using IDN/Punycode algorithms
       def decode_hostname(hostname)
         hostname.gsub(/(\A|#{Regexp.quote(DOT)})#{Regexp.quote(PREFIX)}([^#{Regexp.quote(DOT)}]*)/o) {
-          $1 << decode($2)
+          $1 + decode($2)
         }
       end
     end

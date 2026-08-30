@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# frozen_string_literal: true
 #
 # domain_name.rb - Domain Name manipulation library for Ruby
 #
@@ -70,7 +70,7 @@ class DomainName
     @canonical_tld_p && (@domain ? true : false)
   end
 
-  DOT = '.'.freeze	# :nodoc:
+  DOT = '.'	# :nodoc:
 
   # Parses _hostname_ into a DomainName object.  An IP address is also
   # accepted.  An IPv6 address may be enclosed in square brackets.

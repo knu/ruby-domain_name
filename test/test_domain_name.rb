@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# frozen_string_literal: true
 require 'helper'
 require 'ipaddr'
 
@@ -36,7 +36,7 @@ class TestDomainName < Test::Unit::TestCase
   end
 
   test "accept ASCII-only 'binary' encoded hostnames" do
-    assert_equal "example.com", DomainName.new("example.com".force_encoding("ASCII-8BIT")).hostname
+    assert_equal "example.com", DomainName.new("example.com".b).hostname
   end
 
   test "parse canonical domain names correctly" do
@@ -251,7 +251,7 @@ class TestDomainName < Test::Unit::TestCase
       dn = DomainName(host)
       assert_equal(true, dn.cookie_domain?(host.upcase, true),     dn.to_s)
       assert_equal(true, dn.cookie_domain?(host.downcase, true),   dn.to_s)
-      assert_equal(false, dn.cookie_domain?("www." << host, true), dn.to_s)
+      assert_equal(false, dn.cookie_domain?("www." + host, true), dn.to_s)
       pairs.each { |domain, expected|
         assert_equal(expected, dn.cookie_domain?(domain),             "%s - %s" % [dn.to_s, domain])
         assert_equal(expected, dn.cookie_domain?(DomainName(domain)), "%s - %s" % [dn.to_s, domain])
