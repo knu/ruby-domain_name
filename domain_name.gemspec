@@ -19,6 +19,10 @@ Suffix List.
   gem.homepage      = "https://github.com/knu/ruby-domain_name"
   gem.licenses      = ["BSD-2-Clause", "BSD-3-Clause", "MPL-2.0"]
 
+  gem.metadata["homepage_uri"] = gem.homepage
+  gem.metadata["source_code_uri"] = gem.homepage
+  gem.metadata["changelog_uri"] = "https://github.com/knu/ruby-domain_name/blob/master/CHANGELOG.md"
+
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
