@@ -310,6 +310,8 @@ class TestDomainName < Test::Unit::TestCase
     assert_raises(IPAddr::InvalidAddressError) do
       DomainName('2001:db8::192.0.2.999')
     end
+
+    assert_nil(DomainName('2001:192.0.2.1::1').ipaddr)
   end
 
   test "get superdomain" do
