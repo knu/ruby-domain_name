@@ -100,7 +100,7 @@ class DomainName
       # Encode a +string+ in Punycode
       def encode(string)
         input = string.unpack('U*')
-        output = ''
+        output = +''
 
         # Initialize the state
         n = INITIAL_N
