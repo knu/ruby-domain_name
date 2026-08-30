@@ -6,9 +6,12 @@ on:
       - master
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   ruby-versions:
-    uses: ruby/actions/.github/workflows/ruby_versions.yml@master
+    uses: ruby/actions/.github/workflows/ruby_versions.yml@674947565a7afd0edfc4d301c1f0ef65e30f18f5  # master
     with:
       engine: cruby
       min_version: 2.7
@@ -27,15 +30,39 @@ jobs:
     continue-on-error: ${{matrix.ruby == 'head' || matrix.ruby == 'jruby'}}
 
     steps:
-      - name: Check out
-        uses: actions/checkout@v4
+      - name: Harden Runner
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c  # v2.21.0
+        with:
+          egress-policy: audit
 
-      - name: Set up ruby and bundle
-        uses: ruby/setup-ruby@v1
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b  # v1.321.0
         with:
           ruby-version: ${{matrix.ruby}}
-          bundler-cache: true
+
+      - name: Install dependencies
+        run: |
+          bundle install --jobs 4 --retry 3
 
       - name: Run rake
         run: |
           bundle exec rake
+
+  test-gate:
+    name: Test
+    if: always()
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check matrix results
+        env:
+          RESULT: ${{ needs.test.result }}
+        run: |
+          set -euo pipefail
+          test "$RESULT" = success

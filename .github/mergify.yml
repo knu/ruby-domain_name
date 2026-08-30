@@ -1,0 +1,28 @@
+queue_rules:
+  - name: dependency-updates
+    batch_size: 5
+    batch_max_wait_time: 10 min
+    checks_timeout: auto
+    merge_method: merge-batch
+    queue_conditions:
+      - base = master
+      - author ~= ^(dependabot|renovate)\[bot\]$
+      - label != dependencies:major
+      - -draft
+      - -conflict
+      - "#approved-reviews-by >= 1"
+      - check-success = Test
+    merge_conditions:
+      - "#approved-reviews-by >= 1"
+      - check-success = Test
+
+merge_protections_settings:
+  auto_merge_conditions:
+    - base = master
+    - author ~= ^(dependabot|renovate)\[bot\]$
+    - label != dependencies:major
+    - -draft
+    - -conflict
+    - "#approved-reviews-by >= 1"
+    - check-success = Test
+  reporting_method: check-runs

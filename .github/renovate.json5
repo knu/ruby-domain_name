@@ -1,0 +1,38 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests",
+    ":dependencyDashboard",
+    ":semanticCommitsDisabled",
+  ],
+  labels: ["dependencies"],
+  timezone: "Asia/Tokyo",
+  schedule: ["after 9am on friday", "before 6pm on friday"],
+  rebaseWhen: "behind-base-branch",
+  lockFileMaintenance: {
+    enabled: true,
+    labels: ["dependencies"],
+    schedule: ["after 9am on friday", "before 6pm on friday"],
+  },
+  vulnerabilityAlerts: {
+    enabled: true,
+    labels: ["dependencies", "security"],
+  },
+  packageRules: [
+    {
+      matchUpdateTypes: ["major"],
+      addLabels: ["dependencies:major"],
+    },
+    {
+      matchManagers: ["github-actions"],
+      groupName: "github actions",
+      minimumReleaseAge: "7 days",
+    },
+    {
+      matchDepTypes: ["devDependencies"],
+      groupName: "development dependencies",
+      minimumReleaseAge: "3 days",
+    },
+  ],
+}
