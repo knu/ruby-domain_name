@@ -120,14 +120,9 @@ class DomainName
 
         # Main encoding loop
 
-        while h < input.length
-          # All non-basic code points < n have been handled already.  Find
-          # the next larger one
-
-          m = MAXINT
-          input.each { |cp|
-            m = cp if (n...m) === cp
-          }
+        input.reject { |cp| cp < INITIAL_N }.uniq.sort.each do |m|
+          # All non-basic code points < n have been handled already.  Advance
+          # to the next larger one from the ordering computed above.
 
           # Increase delta enough to advance the decoder's <n,i> state to
           # <m,0>, but guard against overflow
