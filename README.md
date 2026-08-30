@@ -40,6 +40,19 @@ Installation
 
 	gem install domain_name
 
+Release
+-------
+
+Releases use `v`-prefixed version tags.  Push the release commit to
+`master`, wait for CI to pass, and then push the matching tag.  A
+successful tag CI run publishes the gem through RubyGems trusted
+publishing and creates the GitHub release.
+
+Before the first automated release, register `knu/ruby-domain_name`,
+workflow `publish-gem.yml`, and environment `rubygems.org` as a trusted
+publisher at
+https://rubygems.org/gems/domain_name/trusted_publishers/new.
+
 References
 ----------
 
