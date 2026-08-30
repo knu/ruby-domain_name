@@ -253,12 +253,7 @@ class DomainName
   alias idn hostname_idn
 
   def domain_idn
-    @domain_idn ||=
-      if @ipaddr
-        @domain
-      else
-        DomainName::Punycode.decode_hostname(@domain)
-      end
+    @domain_idn ||= DomainName::Punycode.decode_hostname(@domain) if @domain
   end
 
   def tld_idn
