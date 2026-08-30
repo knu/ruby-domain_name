@@ -51,10 +51,10 @@ task :etld_data do
 end
 
 namespace :etld_data do
-  task :commit do
+  task :changelog do
     if system('git', 'diff', '--exit-code', '--quiet', ETLD_DATA_FILE)
       warn "Nothing to commit."
-      exit
+      next
     end
 
     prev = `ruby -e "$(git cat-file -p @:lib/domain_name/version.rb); puts DomainName::VERSION"`.chomp
@@ -73,7 +73,13 @@ namespace :etld_data do
       f.rewind
       f.puts lines
     end
+  end
 
+  task :commit => :changelog do
+    next if system('git', 'diff', '--exit-code', '--quiet', ETLD_DATA_FILE)
+
+    curr = `ruby -e "load 'lib/domain_name/version.rb'; puts DomainName::VERSION"`.chomp
+    timestamp = File.mtime(ETLD_DATA_FILE).utc
     sh 'git', 'commit',
       'CHANGELOG.md',
       ETLD_DATA_FILE,

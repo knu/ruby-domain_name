@@ -1,0 +1,80 @@
+name: Update Public Suffix List
+
+on:
+  schedule:
+    - cron: "23 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-public-suffix-list
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.repository == 'knu/ruby-domain_name'
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c  # v2.21.0
+        with:
+          egress-policy: audit
+
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b  # v1.321.0
+        with:
+          bundler-cache: true
+          ruby-version: ruby
+
+      - name: Update Public Suffix List
+        run: |
+          bundle exec rake etld_data etld_data:changelog
+
+      - name: Run tests
+        run: |
+          bundle exec rake test
+
+      - name: Read update timestamp
+        id: update
+        run: |
+          timestamp="$(ruby -Ilib -e 'require "domain_name/etld_data"; print DomainName::ETLD_DATA_DATE')"
+          echo "timestamp=$timestamp" >> "$GITHUB_OUTPUT"
+
+      - name: Create pull request
+        id: pull-request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1  # v8.1.1
+        with:
+          add-paths: |
+            CHANGELOG.md
+            data/public_suffix_list.dat
+            lib/domain_name/etld_data.rb
+            lib/domain_name/version.rb
+          branch: automation/public-suffix-list
+          commit-message: Update the eTLD database to ${{ steps.update.outputs.timestamp }}.
+          delete-branch: true
+          token: ${{ github.token }}
+          title: Update the eTLD database to ${{ steps.update.outputs.timestamp }}
+          body: |
+            Update the bundled Public Suffix List and regenerate the eTLD database.
+
+      - name: Run CI for update branch
+        if: >-
+          steps.pull-request.outputs.pull-request-operation == 'created' ||
+          steps.pull-request.outputs.pull-request-operation == 'updated'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run ci.yml --ref automation/public-suffix-list
