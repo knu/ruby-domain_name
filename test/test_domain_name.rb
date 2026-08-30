@@ -293,6 +293,27 @@ class TestDomainName < Test::Unit::TestCase
     }
   end
 
+  test "parse IPv4-embedded IPv6 addresses" do
+    {
+      '::ffff:192.0.2.1' => '::ffff:192.0.2.1',
+      '[::ffff:192.0.2.1]' => '::ffff:192.0.2.1',
+      '2001:db8::192.0.2.1' => '2001:db8::c000:201',
+    }.each { |host, normalized|
+      dn = DomainName(host)
+      assert_equal(normalized, dn.hostname)
+      assert_equal("[#{normalized}]", dn.uri_host)
+      assert_equal(IPAddr.new(normalized), dn.ipaddr)
+      assert_equal(nil, dn.domain)
+      assert_equal(nil, dn.tld)
+    }
+
+    assert_raises(IPAddr::InvalidAddressError) do
+      DomainName('2001:db8::192.0.2.999')
+    end
+
+    assert_nil(DomainName('2001:192.0.2.1::1').ipaddr)
+  end
+
   test "get superdomain" do
     [
       %w[www.sub.example.local sub.example.local example.local local],
