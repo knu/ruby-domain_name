@@ -318,4 +318,8 @@ class TestDomainName < Test::Unit::TestCase
     assert_equal "xn--wgv71a", dn.tld
     assert_equal "日本", dn.tld_idn
   end
+
+  test "return nil for an absent IDN domain" do
+    assert_nil DomainName.new("com").domain_idn
+  end
 end
