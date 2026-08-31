@@ -28,6 +28,10 @@ task :etld_data do
     rescue LoadError, NameError
       data = ETLD_DATA_URI.read
     end
+    if File.binread(ETLD_DATA_FILE) == data.b
+      puts 'eTLD database is up-to-date.'
+      next
+    end
     puts 'eTLD database is modified.'
     date = data.last_modified
     File.write(ETLD_DATA_FILE, data)
