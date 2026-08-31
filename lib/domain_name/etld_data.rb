@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DomainName
-  ETLD_DATA_DATE = '2026-08-29T12:33:17Z'
+  ETLD_DATA_DATE = '2026-08-31T05:48:12Z'
 
   ETLD_DATA = {
     "ac" => 0,
