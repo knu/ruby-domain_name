@@ -43,17 +43,29 @@ jobs:
         run: |
           bundle exec rake etld_data etld_data:changelog
 
+      - name: Check for list changes
+        id: changes
+        run: |
+          if git diff --quiet -- data/public_suffix_list.dat; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run tests
+        if: steps.changes.outputs.changed == 'true'
         run: |
           bundle exec rake test
 
       - name: Read update timestamp
+        if: steps.changes.outputs.changed == 'true'
         id: update
         run: |
           timestamp="$(ruby -Ilib -e 'require "domain_name/etld_data"; print DomainName::ETLD_DATA_DATE')"
           echo "timestamp=$timestamp" >> "$GITHUB_OUTPUT"
 
       - name: Create pull request
+        if: steps.changes.outputs.changed == 'true'
         id: pull-request
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1  # v8.1.1
         with:
