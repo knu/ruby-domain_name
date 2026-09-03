@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DomainName
-  ETLD_DATA_DATE = '2026-08-29T12:33:17Z'
+  ETLD_DATA_DATE = '2026-09-02T06:04:05Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -7960,6 +7960,7 @@ class DomainName
     "bwcloud-os-instance.de" => -1,
     "cafjs.com" => 0,
     "canva-apps.cn" => 0,
+    "canva-code.cn" => 0,
     "my.canvasite.cn" => 0,
     "khsj.cn" => 0,
     "canva-apps.com" => 0,
@@ -9117,8 +9118,6 @@ class DomainName
     "j.scaleforce.com.cy" => 0,
     "jelastic.dogado.eu" => 0,
     "fi.cloudplatform.fi" => 0,
-    "demo.datacenter.fi" => 0,
-    "paas.datacenter.fi" => 0,
     "jele.host" => 0,
     "mircloud.host" => 0,
     "paas.beebyte.io" => 0,
@@ -9200,6 +9199,8 @@ class DomainName
     "laravel.cloud" => 0,
     "on-forge.com" => 0,
     "on-vapor.com" => 0,
+    "eth.limo" => -1,
+    "eth.link" => -1,
     "git-repos.de" => 0,
     "lcube-server.de" => 0,
     "svn-repos.de" => 0,
@@ -9754,6 +9755,8 @@ class DomainName
     "subsc-pay.com" => 0,
     "subsc-pay.net" => 0,
     "git-pages.rit.edu" => 0,
+    "builtwithrocket.new" => -1,
+    "rocketpreview.app" => 0,
     "rocky.page" => 0,
     "rub.de" => 0,
     "ruhr-uni-bochum.de" => 0,
@@ -10157,6 +10160,7 @@ class DomainName
     "v0.build" => 0,
     "vercel.dev" => 0,
     "vusercontent.net" => 0,
+    "tmp.now" => 0,
     "vercel.run" => 0,
     "now.sh" => 0,
     "2038.io" => 0,
@@ -10223,9 +10227,6 @@ class DomainName
     "grok.me" => 0,
     "xenonconnect.de" => -1,
     "half.host" => 0,
-    "xnbay.com" => 0,
-    "u2.xnbay.com" => 0,
-    "u2-local.xnbay.com" => 0,
     "cistron.nl" => 0,
     "demon.nl" => 0,
     "xs4all.space" => 0,
