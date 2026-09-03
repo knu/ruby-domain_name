@@ -48,6 +48,10 @@ Releases use `v`-prefixed version tags.  Push the release commit to
 successful tag CI run publishes the gem through RubyGems trusted
 publishing and creates the GitHub release.
 
+Public Suffix List update pull requests from the
+`automation/public-suffix-list` branch are tagged automatically when
+merged.  The tag CI run then publishes the release as above.
+
 Before the first automated release, register `knu/ruby-domain_name`,
 workflow `publish-gem.yml`, and environment `rubygems.org` as a trusted
 publisher at

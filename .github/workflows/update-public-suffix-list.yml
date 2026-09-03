@@ -1,6 +1,11 @@
 name: Update Public Suffix List
 
 on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
   schedule:
     - cron: "23 0 * * *"
   workflow_dispatch:
@@ -14,7 +19,11 @@ concurrency:
 
 jobs:
   update:
-    if: github.repository == 'knu/ruby-domain_name'
+    if: >-
+      ${{
+        github.repository == 'knu/ruby-domain_name' &&
+        github.event_name != 'pull_request'
+      }}
     runs-on: ubuntu-latest
 
     permissions:
@@ -90,3 +99,63 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh workflow run ci.yml --ref automation/public-suffix-list
+
+  release:
+    if: >-
+      ${{
+        github.repository == 'knu/ruby-domain_name' &&
+        github.event.pull_request.merged == true &&
+        github.event.pull_request.head.ref == 'automation/public-suffix-list' &&
+        github.event.pull_request.head.repo.full_name == github.repository
+      }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: write
+      contents: write
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c  # v2.21.0
+        with:
+          egress-policy: audit
+
+      - name: Check out merged update
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+      - name: Read release version
+        id: release
+        env:
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$MERGE_SHA"
+          version="$(ruby -Ilib -e 'require "domain_name/version"; print DomainName::VERSION')"
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          echo "tag=v${version}" >> "$GITHUB_OUTPUT"
+
+      - name: Create release tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          if tag_sha="$(git rev-parse --verify "${TAG}^{commit}" 2>/dev/null)"; then
+            test "$tag_sha" = "$MERGE_SHA"
+          else
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+              --raw-field "ref=refs/tags/${TAG}" \
+              --raw-field "sha=${MERGE_SHA}"
+          fi
+
+      - name: Run CI for release tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          gh workflow run ci.yml --ref "$TAG"
