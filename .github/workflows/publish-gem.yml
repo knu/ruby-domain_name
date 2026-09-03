@@ -11,15 +11,63 @@ permissions:
   contents: read
 
 jobs:
-  publish:
+  detect-release:
     if: >-
       ${{
         github.event.workflow_run.conclusion == 'success' &&
-        (github.event.workflow_run.event == 'push' ||
-         github.event.workflow_run.event == 'workflow_dispatch') &&
+        github.event.workflow_run.event == 'push' &&
         github.event.workflow_run.head_repository.full_name == github.repository &&
-        startsWith(github.event.workflow_run.head_branch, 'v') &&
+        (github.event.workflow_run.head_branch == 'master' ||
+         startsWith(github.event.workflow_run.head_branch, 'v')) &&
         github.repository == 'knu/ruby-domain_name'
+      }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: read
+
+    outputs:
+      release-kind: ${{ steps.release.outputs.kind }}
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c  # v2.21.0
+        with:
+          egress-policy: audit
+
+      - name: Detect release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          if [[ "$HEAD_BRANCH" == v* ]]; then
+            echo "kind=tag" >> "$GITHUB_OUTPUT"
+            exit
+          fi
+
+          count="$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            "repos/${GITHUB_REPOSITORY}/commits/${HEAD_SHA}/pulls" \
+            --jq '[.[] | select(
+              .merged_at != null and
+              .base.ref == "master" and
+              .head.ref == "automation/public-suffix-list" and
+              .head.repo.full_name == "knu/ruby-domain_name"
+            )] | length')"
+          if [[ "$count" == 1 ]]; then
+            echo "kind=etld" >> "$GITHUB_OUTPUT"
+          fi
+
+  publish:
+    needs: detect-release
+    if: >-
+      ${{
+        needs.detect-release.outputs.release-kind == 'tag' ||
+        needs.detect-release.outputs.release-kind == 'etld'
       }}
     runs-on: ubuntu-latest
 
@@ -37,12 +85,47 @@ jobs:
         with:
           egress-policy: audit
 
-      - name: Check out release tag
+      - name: Check out release commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
-          ref: ${{ github.event.workflow_run.head_branch }}
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Determine release tag
+        id: release
+        env:
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          RELEASE_KIND: ${{ needs.detect-release.outputs.release-kind }}
+        run: |
+          set -euo pipefail
+          version="$(ruby -Ilib -e 'require "domain_name/version"; print DomainName::VERSION')"
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          if [[ "$RELEASE_KIND" == tag ]]; then
+            test "v${version}" = "$HEAD_BRANCH"
+            tag="$HEAD_BRANCH"
+          else
+            tag="v${version}"
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Ensure release tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          RELEASE_KIND: ${{ needs.detect-release.outputs.release-kind }}
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          if tag_sha="$(git rev-parse --verify "${TAG}^{commit}" 2>/dev/null)"; then
+            test "$tag_sha" = "$HEAD_SHA"
+          else
+            test "$RELEASE_KIND" = etld
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+              --raw-field "ref=refs/tags/${TAG}" \
+              --raw-field "sha=${HEAD_SHA}"
+            git tag "$TAG" "$HEAD_SHA"
+          fi
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b  # v1.321.0
@@ -56,7 +139,7 @@ jobs:
       - name: Verify release tag
         env:
           EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
-          TAG: ${{ github.event.workflow_run.head_branch }}
+          TAG: ${{ steps.release.outputs.tag }}
         run: |
           set -euo pipefail
           test "$(git rev-parse "${TAG}^{commit}")" = "$EXPECTED_SHA"
@@ -69,7 +152,7 @@ jobs:
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.event.workflow_run.head_branch }}
+          TAG: ${{ steps.release.outputs.tag }}
         run: |
           set -euo pipefail
           gh release create "$TAG" --verify-tag --generate-notes
