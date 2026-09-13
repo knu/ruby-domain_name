@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DomainName
-  ETLD_DATA_DATE = '2026-09-07T20:57:24Z'
+  ETLD_DATA_DATE = '2026-09-08T12:18:49Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -8933,6 +8933,8 @@ class DomainName
     "translate.goog" => 0,
     "usercontent.goog" => -1,
     "cloudfunctions.net" => 0,
+    "cloud.run" => 0,
+    "ai.studio" => 0,
     "goupile.fr" => 0,
     "pymnt.uk" => 0,
     "gov.nl" => 0,
