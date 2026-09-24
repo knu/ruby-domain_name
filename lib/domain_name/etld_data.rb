@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DomainName
-  ETLD_DATA_DATE = '2026-09-07T20:57:24Z'
+  ETLD_DATA_DATE = '2026-09-21T18:50:24Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -8126,6 +8126,10 @@ class DomainName
     "dyndns.dappnode.io" => 0,
     "builtwithdark.com" => 0,
     "darklang.io" => 0,
+    "aws.databricksapps.com" => 0,
+    "azure.databricksapps.com" => -1,
+    "gcp.databricksapps.com" => 0,
+    "aws-gov.databricksapps.us" => 0,
     "demo.datadetect.com" => 0,
     "instance.datadetect.com" => 0,
     "edgestack.me" => 0,
@@ -8727,6 +8731,7 @@ class DomainName
     "figma-gov.site" => 0,
     "preview.site" => 0,
     "filegear.me" => 0,
+    "hosted-by-files.com" => 0,
     "firebaseapp.com" => 0,
     "fldrv.com" => 0,
     "on-fleek.app" => 0,
@@ -8933,6 +8938,8 @@ class DomainName
     "translate.goog" => 0,
     "usercontent.goog" => -1,
     "cloudfunctions.net" => 0,
+    "cloud.run" => 0,
+    "ai.studio" => 0,
     "goupile.fr" => 0,
     "pymnt.uk" => 0,
     "gov.nl" => 0,
@@ -8964,6 +8971,7 @@ class DomainName
     "hercules-dev.com" => 0,
     "here.now" => 0,
     "herokuapp.com" => 0,
+    "compute.herokuapp.com" => -1,
     "heyflow.page" => 0,
     "heyflow.site" => 0,
     "ravendb.cloud" => 0,
@@ -9750,8 +9758,6 @@ class DomainName
     "qcx.io" => 0,
     "sys.qcx.io" => -1,
     "myqnapcloud.cn" => 0,
-    "alpha-myqnapcloud.com" => 0,
-    "dev-myqnapcloud.com" => 0,
     "mycloudnas.com" => 0,
     "mynascloud.com" => 0,
     "myqnapcloud.com" => 0,
@@ -10111,6 +10117,7 @@ class DomainName
     "storage.supabase.co" => 0,
     "supabase.in" => 0,
     "supabase.net" => 0,
+    "surge.sh" => 0,
     "syncloud.it" => 0,
     "dscloud.biz" => 0,
     "direct.quickconnect.cn" => 0,
