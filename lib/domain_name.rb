@@ -71,6 +71,8 @@ class DomainName
   end
 
   DOT = '.'	# :nodoc:
+  MAX_HOSTNAME_LENGTH = 253 # :nodoc:
+  MAX_LABEL_LENGTH = 63 # :nodoc:
 
   # Parses _hostname_ into a DomainName object.  An IP address is also
   # accepted.  An IPv6 address may be enclosed in square brackets.
@@ -81,7 +83,11 @@ class DomainName
     if hostname.start_with?(DOT)
       raise ArgumentError, "domain name must not start with a dot: #{hostname}"
     end
-    case hostname
+    address = hostname.chomp(DOT)
+    if address.length > MAX_HOSTNAME_LENGTH
+      raise ArgumentError, "domain name is too long: #{hostname}"
+    end
+    case address
     when /\A([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\z/
       @ipaddr = IPAddr.new($1)
       @uri_host = @hostname = @ipaddr.to_s
@@ -283,8 +289,19 @@ class DomainName
     def normalize(domain)
       chomped = domain.chomp(DOT)
       normalized = chomped.ascii_only? ? chomped : chomped.unicode_normalize(:nfc)
+      if normalized.length > MAX_HOSTNAME_LENGTH
+        raise ArgumentError, "domain name is too long: #{domain}"
+      end
+      if normalized.split(DOT, -1).any? { |label| label.length > MAX_LABEL_LENGTH }
+        raise ArgumentError, "domain label is too long: #{domain}"
+      end
 
-      DomainName::Punycode.encode_hostname(normalized).downcase
+      hostname = DomainName::Punycode.encode_hostname(normalized).downcase
+      if hostname.bytesize > MAX_HOSTNAME_LENGTH ||
+          hostname.split(DOT, -1).any? { |label| label.bytesize > MAX_LABEL_LENGTH }
+        raise ArgumentError, "encoded domain name is too long: #{domain}"
+      end
+      hostname
     end
   end
 end
