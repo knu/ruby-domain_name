@@ -13,14 +13,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  update:
+  generate:
     if: github.repository == 'knu/ruby-domain_name'
     runs-on: ubuntu-latest
 
     permissions:
-      actions: write
-      contents: write
-      pull-requests: write
+      contents: read
+
+    outputs:
+      changed: ${{ steps.changes.outputs.changed }}
+      timestamp: ${{ steps.update.outputs.timestamp }}
 
     steps:
       - name: Harden Runner
@@ -61,11 +63,58 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         id: update
         run: |
+          set -euo pipefail
           timestamp="$(ruby -Ilib -e 'require "domain_name/etld_data"; print DomainName::ETLD_DATA_DATE')"
+          [[ "$timestamp" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$ ]]
           echo "timestamp=$timestamp" >> "$GITHUB_OUTPUT"
 
-      - name: Create pull request
+      - name: Upload update artifact
         if: steps.changes.outputs.changed == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: public-suffix-list-update
+          path: |
+            CHANGELOG.md
+            data/public_suffix_list.dat
+            lib/domain_name/etld_data.rb
+            lib/domain_name/version.rb
+          if-no-files-found: error
+          retention-days: 1
+
+  submit:
+    needs: generate
+    if: needs.generate.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c  # v2.21.0
+        with:
+          egress-policy: audit
+
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Download update artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
+        with:
+          name: public-suffix-list-update
+          path: .
+
+      - name: Verify update artifact
+        run: |
+          set -euo pipefail
+          git diff --check
+          ! git diff --quiet -- data/public_suffix_list.dat
+
+      - name: Create pull request
         id: pull-request
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1  # v8.1.1
         with:
@@ -75,10 +124,10 @@ jobs:
             lib/domain_name/etld_data.rb
             lib/domain_name/version.rb
           branch: automation/public-suffix-list
-          commit-message: Update the eTLD database to ${{ steps.update.outputs.timestamp }}.
+          commit-message: Update the eTLD database to ${{ needs.generate.outputs.timestamp }}.
           delete-branch: true
           token: ${{ github.token }}
-          title: Update the eTLD database to ${{ steps.update.outputs.timestamp }}
+          title: Update the eTLD database to ${{ needs.generate.outputs.timestamp }}
           body: |
             Update the bundled Public Suffix List and regenerate the eTLD database.
 

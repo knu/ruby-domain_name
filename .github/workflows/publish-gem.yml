@@ -62,7 +62,7 @@ jobs:
             echo "kind=etld" >> "$GITHUB_OUTPUT"
           fi
 
-  publish:
+  prepare-release:
     needs: detect-release
     if: >-
       ${{
@@ -71,13 +71,11 @@ jobs:
       }}
     runs-on: ubuntu-latest
 
-    environment:
-      name: rubygems.org
-      url: https://rubygems.org/gems/domain_name
-
     permissions:
-      contents: write
-      id-token: write
+      contents: read
+
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
 
     steps:
       - name: Harden Runner
@@ -109,12 +107,70 @@ jobs:
           fi
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b  # v1.321.0
+        with:
+          ruby-version: ruby
+
+      - name: Verify release tag
+        env:
+          EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
+          RELEASE_KIND: ${{ needs.detect-release.outputs.release-kind }}
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          if tag_sha="$(git rev-parse --verify "${TAG}^{commit}" 2>/dev/null)"; then
+            test "$tag_sha" = "$EXPECTED_SHA"
+          else
+            test "$RELEASE_KIND" = etld
+          fi
+          version="$(ruby -Ilib -e 'require "domain_name/version"; print DomainName::VERSION')"
+          test "v${version}" = "$TAG"
+
+      - name: Build gem
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          mkdir -p pkg
+          gem build domain_name.gemspec --output "pkg/domain_name-${TAG#v}.gem"
+
+      - name: Upload gem artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: release-gem
+          path: pkg/*.gem
+          if-no-files-found: error
+          retention-days: 1
+
+  ensure-tag:
+    needs:
+      - detect-release
+      - prepare-release
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c  # v2.21.0
+        with:
+          egress-policy: audit
+
+      - name: Check out release commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.event.workflow_run.head_sha }}
+
       - name: Ensure release tag
         env:
           GH_TOKEN: ${{ github.token }}
           HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
           RELEASE_KIND: ${{ needs.detect-release.outputs.release-kind }}
-          TAG: ${{ steps.release.outputs.tag }}
+          TAG: ${{ needs.prepare-release.outputs.tag }}
         run: |
           set -euo pipefail
           if tag_sha="$(git rev-parse --verify "${TAG}^{commit}" 2>/dev/null)"; then
@@ -124,35 +180,104 @@ jobs:
             gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
               --raw-field "ref=refs/tags/${TAG}" \
               --raw-field "sha=${HEAD_SHA}"
-            git tag "$TAG" "$HEAD_SHA"
           fi
+
+  publish:
+    needs:
+      - prepare-release
+      - ensure-tag
+    runs-on: ubuntu-latest
+
+    environment:
+      name: rubygems.org
+      url: https://rubygems.org/gems/domain_name
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c  # v2.21.0
+        with:
+          egress-policy: audit
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b  # v1.321.0
         with:
           ruby-version: ruby
 
-      - name: Install dependencies
-        run: |
-          bundle install --jobs 4 --retry 3
+      - name: Download gem artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
+        with:
+          name: release-gem
+          path: pkg
 
-      - name: Verify release tag
-        env:
-          EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
-          TAG: ${{ steps.release.outputs.tag }}
-        run: |
-          set -euo pipefail
-          test "$(git rev-parse "${TAG}^{commit}")" = "$EXPECTED_SHA"
-          version="$(ruby -Ilib -e 'require "domain_name/version"; print DomainName::VERSION')"
-          test "v${version}" = "$TAG"
+      - name: Check out release helper
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          repository: rubygems/release-gem
+          ref: 7f9650160c1a4e7989fdc9855807bdbd421d8b6b  # v1.4.1
+          path: .release-gem
+          persist-credentials: false
+
+      - name: Configure trusted publishing credentials
+        uses: rubygems/configure-rubygems-credentials@dc5a8d8553e6ee01fc26761a49e99e733d17954a  # v2.1.0
 
       - name: Publish to RubyGems
-        uses: rubygems/release-gem@7f9650160c1a4e7989fdc9855807bdbd421d8b6b  # v1.4.1
+        env:
+          RUBYOPT: -r${{ github.workspace }}/.release-gem/rubygems-attestation-patch.rb
+        run: |
+          set -euo pipefail
+          gem push pkg/*.gem
+
+  await-release:
+    needs: publish
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c  # v2.21.0
+        with:
+          egress-policy: audit
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b  # v1.321.0
+        with:
+          ruby-version: ruby
+
+      - name: Download gem artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
+        with:
+          name: release-gem
+          path: pkg
+
+      - name: Wait for release to propagate
+        run: |
+          gem exec rubygems-await pkg/*.gem
+
+  create-github-release:
+    needs:
+      - prepare-release
+      - await-release
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c  # v2.21.0
+        with:
+          egress-policy: audit
 
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ steps.release.outputs.tag }}
+          TAG: ${{ needs.prepare-release.outputs.tag }}
         run: |
           set -euo pipefail
           gh release create "$TAG" --verify-tag --generate-notes
