@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DomainName
-  ETLD_DATA_DATE = '2026-09-21T18:50:24Z'
+  ETLD_DATA_DATE = '2026-10-01T23:03:02Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -6343,7 +6343,6 @@ class DomainName
     "jpmorgan" => 0,
     "jprs" => 0,
     "juegos" => 0,
-    "juniper" => 0,
     "kaufen" => 0,
     "kddi" => 0,
     "kerryhotels" => 0,
@@ -8088,8 +8087,10 @@ class DomainName
     "co.no" => 0,
     "devinapps.com" => -1,
     "webhosting.be" => 0,
+    "site.webhosting.be" => 0,
     "prvw.eu" => 0,
     "hosting-cluster.nl" => 0,
+    "site.hosting-cluster.nl" => 0,
     "ctfcloud.net" => 0,
     "convex.app" => 0,
     "convex.cloud" => 0,
@@ -8806,6 +8807,7 @@ class DomainName
     "gitlab.io" => 0,
     "gitapp.si" => 0,
     "gitpage.si" => 0,
+    "glideos.app" => 0,
     "nog.community" => 0,
     "co.ro" => 0,
     "shop.ro" => 0,
@@ -9081,6 +9083,7 @@ class DomainName
     "home64.de" => 0,
     "ipv64.de" => 0,
     "ipv64.net" => 0,
+    "iqhs.pl" => 0,
     "ir.md" => 0,
     "is-a-good.dev" => 0,
     "iservschule.de" => 0,
