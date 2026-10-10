@@ -11,9 +11,7 @@
   schedule: ["after 9am on friday", "before 6pm on friday"],
   rebaseWhen: "behind-base-branch",
   lockFileMaintenance: {
-    enabled: true,
-    labels: ["dependencies"],
-    schedule: ["after 9am on friday", "before 6pm on friday"],
+    enabled: false,
   },
   vulnerabilityAlerts: {
     enabled: true,
