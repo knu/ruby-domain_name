@@ -272,6 +272,13 @@ class TestDomainName < Test::Unit::TestCase
     assert_equal(false, dn.cookie_domain?('168.10.20'))
     assert_equal(false, dn.cookie_domain?('20'))
     assert_equal(nil, dn.superdomain)
+
+    dn = DomainName("#{a}.")
+    assert_equal(a, dn.hostname)
+    assert_equal(true, dn.ipaddr?)
+    assert_equal(nil, dn.domain)
+    assert_equal(true, dn.cookie_domain?(a))
+    assert_equal(false, dn.cookie_domain?('10.20'))
   end
 
   test "parse IPv6 addresseses" do

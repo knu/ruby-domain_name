@@ -82,7 +82,7 @@ class DomainName
       raise ArgumentError, "domain name must not start with a dot: #{hostname}"
     end
     case hostname
-    when /\A([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\z/
+    when /\A([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\.?\z/
       @ipaddr = IPAddr.new($1)
       @uri_host = @hostname = @ipaddr.to_s
       @domain = @tld = nil
