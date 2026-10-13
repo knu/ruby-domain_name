@@ -92,6 +92,9 @@ class DomainName
     DOT = '.'
     PREFIX = 'xn--'
 
+    # The maximum length of a label in a hostname (RFC 1035)
+    MAX_LABEL_LENGTH = 63
+
     # Most errors we raise are basically kind of ArgumentError.
     class ArgumentError < ::ArgumentError; end
     class BufferOverflowError < ArgumentError; end
@@ -177,13 +180,22 @@ class DomainName
         output
       end
 
-      # Encode a hostname using IDN/Punycode algorithms
+      # Encode a hostname using IDN/Punycode algorithms.  Raises
+      # ArgumentError if an encoded label would exceed
+      # MAX_LABEL_LENGTH.
       def encode_hostname(hostname)
         hostname.match(RE_NONBASIC) or return hostname
 
         hostname.split(DOT).map { |name|
           if name.match(RE_NONBASIC)
-            PREFIX + encode(name)
+            # Encoding takes quadratic time, and the encoded label is
+            # always longer than the input by at least the prefix
+            name.length + PREFIX.length > MAX_LABEL_LENGTH and
+              raise ArgumentError, "Label is too long: #{name.length} characters"
+            label = PREFIX + encode(name)
+            label.length > MAX_LABEL_LENGTH and
+              raise ArgumentError, "Encoded label is too long: #{label.length} characters"
+            label
           else
             name
           end
@@ -272,9 +284,13 @@ class DomainName
         output.pack('U*')
       end
 
-      # Decode a hostname using IDN/Punycode algorithms
+      # Decode a hostname using IDN/Punycode algorithms.  Raises
+      # ArgumentError if an encoded label exceeds MAX_LABEL_LENGTH.
       def decode_hostname(hostname)
         hostname.gsub(/(\A|#{Regexp.quote(DOT)})#{Regexp.quote(PREFIX)}([^#{Regexp.quote(DOT)}]*)/o) {
+          length = PREFIX.length + $2.length
+          length > MAX_LABEL_LENGTH and
+            raise ArgumentError, "Encoded label is too long: #{length} characters"
           $1 + decode($2)
         }
       end

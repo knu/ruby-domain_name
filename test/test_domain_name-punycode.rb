@@ -96,4 +96,36 @@ class TestDomainName < Test::Unit::TestCase
       assert_equal cps.pack('U*').unicode_normalize(:nfc), DomainName::Punycode.decode(punycode), title
     }
   end
+
+  test "limit the length of encoded labels in a hostname" do
+    longest = 'a' * 55 + "ü"
+    encoded = 'xn--' + 'a' * 55 + '-8yf'
+    assert_equal 63, encoded.length
+    assert_equal "#{encoded}.com", DomainName::Punycode.encode_hostname("#{longest}.com")
+    assert_equal "#{longest}.com", DomainName::Punycode.decode_hostname("#{encoded}.com")
+
+    assert_raises(DomainName::Punycode::ArgumentError) {
+      DomainName::Punycode.encode_hostname("a#{longest}.com")
+    }
+    assert_raises(DomainName::Punycode::ArgumentError) {
+      DomainName::Punycode.decode_hostname("xn--a#{encoded[4..-1]}.com")
+    }
+
+    ascii = 'a' * 64
+    assert_equal "#{ascii}.com", DomainName::Punycode.encode_hostname("#{ascii}.com")
+    assert_equal "#{ascii}.com", DomainName::Punycode.decode_hostname("#{ascii}.com")
+  end
+
+  test "reject long labels before encoding or decoding them" do
+    unicode = (0x4E00...0x4E00 + 10_000).to_a.pack('U*')
+    assert_raises(DomainName::Punycode::ArgumentError) {
+      DomainName::Punycode.encode_hostname("#{unicode}.com")
+    }
+    assert_raise_kind_of(ArgumentError) { DomainName.new("#{unicode}.com") }
+
+    punycode = 'xn--' + '9' * 10_000
+    assert_raises(DomainName::Punycode::ArgumentError) {
+      DomainName::Punycode.decode_hostname("#{punycode}.com")
+    }
+  end
 end
