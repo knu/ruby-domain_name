@@ -184,6 +184,24 @@ class TestDomainName < Test::Unit::TestCase
     }
   end
 
+  test "compare with objects that are not strings" do
+    dn = DomainName('foo.com')
+    [nil, 1, :'foo.com', Object.new].each { |other|
+      assert_equal(false, dn == other)
+      assert_equal(true,  dn != other)
+      assert_equal(nil,   dn <=> other)
+      assert_equal(nil,   dn <   other)
+      assert_equal(nil,   dn >=  other)
+    }
+
+    str = Object.new
+    def str.to_str
+      'www.foo.com'
+    end
+    assert_equal(false, dn == str)
+    assert_equal(1,     dn <=> str)
+  end
+
   test "check cookie domain correctly" do
     {
       'com' => [
