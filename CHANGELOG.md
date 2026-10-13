@@ -1,9 +1,17 @@
 # Changelog
 
-## [v0.6.20261007](https://github.com/knu/ruby-domain_name/tree/v0.6.20261007) (2026-10-13)
-[Full Changelog](https://github.com/knu/ruby-domain_name/compare/v0.6.20260921...v0.6.20261007)
+## [v0.7.20261007](https://github.com/knu/ruby-domain_name/tree/v0.7.20261007) (2026-10-13)
+[Full Changelog](https://github.com/knu/ruby-domain_name/compare/v0.6.20260921...v0.7.20261007)
 
 - Update the eTLD database to 2026-10-07 07:28:30 UTC
+- Reject IDN labels longer than 63 characters in `DomainName::Punycode.encode_hostname` and `decode_hostname`, and thus in `DomainName.new`, to avoid quadratic Punycode processing time
+- Classify a rooted IPv4 address such as `127.0.0.1.` as an IP address instead of a domain name
+- Make `DomainName#==` return false and `DomainName#<=>` return nil for objects that are not strings, instead of raising `TypeError`
+
+**Merged pull requests:**
+
+- Return conventional results for unrelated comparisons [\#35](https://github.com/knu/ruby-domain_name/pull/35) ([OskarEichler](https://github.com/OskarEichler))
+- Classify rooted IPs and bound hostname normalization [\#41](https://github.com/knu/ruby-domain_name/pull/41) ([OskarEichler](https://github.com/OskarEichler))
 
 ## [v0.6.20260921](https://github.com/knu/ruby-domain_name/tree/v0.6.20260921) (2026-09-24)
 [Full Changelog](https://github.com/knu/ruby-domain_name/compare/v0.6.20260907...v0.6.20260921)
