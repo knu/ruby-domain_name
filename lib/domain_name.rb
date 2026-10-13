@@ -171,12 +171,20 @@ class DomainName
   end
 
   def ==(other)
-    other = DomainName.new(other) unless DomainName === other
+    unless DomainName === other
+      other = String.try_convert(other)
+      return false unless other
+      other = DomainName.new(other)
+    end
     other.hostname == @hostname
   end
 
   def <=>(other)
-    other = DomainName.new(other) unless DomainName === other
+    unless DomainName === other
+      other = String.try_convert(other)
+      return nil unless other
+      other = DomainName.new(other)
+    end
     othername = other.hostname
     if othername == @hostname
       0
