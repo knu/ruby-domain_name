@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class DomainName
-  VERSION = '0.7.20261007'
+  VERSION = '0.7.20261028'
 end
