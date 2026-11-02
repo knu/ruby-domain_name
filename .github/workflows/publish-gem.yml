@@ -73,10 +73,11 @@ jobs:
 
     environment:
       name: rubygems.org
-      url: https://rubygems.org/gems/domain_name
+      deployment: false
 
     permissions:
       contents: write
+      deployments: write
       id-token: write
 
     steps:
@@ -108,6 +109,7 @@ jobs:
             tag="v${version}"
           fi
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Ensure release tag
         env:
@@ -146,8 +148,53 @@ jobs:
           version="$(ruby -Ilib -e 'require "domain_name/version"; print DomainName::VERSION')"
           test "v${version}" = "$TAG"
 
+      # workflow_run uses the default branch SHA, so record the release tag explicitly.
+      - name: Record deployment start
+        id: deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+          deployment_id="$(gh api --method POST "repos/${GITHUB_REPOSITORY}/deployments" \
+            --raw-field "ref=$TAG" \
+            --raw-field environment=rubygems.org \
+            --raw-field "description=Publish domain_name $VERSION" \
+            --field auto_merge=false \
+            --field 'required_contexts[]' \
+            --field production_environment=true \
+            --jq '.id')"
+          echo "id=$deployment_id" >> "$GITHUB_OUTPUT"
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/deployments/${deployment_id}/statuses" \
+            --raw-field state=in_progress \
+            --raw-field "log_url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --field auto_inactive=false > /dev/null
+
       - name: Publish to RubyGems
+        id: publish
         uses: rubygems/release-gem@v1.4.1
+
+      - name: Record deployment result
+        if: ${{ always() && steps.deployment.outputs.id != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEPLOYMENT_ID: ${{ steps.deployment.outputs.id }}
+          PUBLISH_OUTCOME: ${{ steps.publish.outcome }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+          case "$PUBLISH_OUTCOME" in
+            success) state=success ;;
+            cancelled) state=error ;;
+            *) state=failure ;;
+          esac
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/deployments/${DEPLOYMENT_ID}/statuses" \
+            --raw-field "state=$state" \
+            --raw-field "description=RubyGems publish: $PUBLISH_OUTCOME" \
+            --raw-field "environment_url=https://rubygems.org/gems/domain_name/versions/${VERSION}" \
+            --raw-field "log_url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --field auto_inactive=false > /dev/null
 
       - name: Create GitHub release
         env:
