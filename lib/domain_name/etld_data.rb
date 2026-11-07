@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DomainName
-  ETLD_DATA_DATE = '2026-10-31T14:17:35Z'
+  ETLD_DATA_DATE = '2026-11-06T09:01:55Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -7918,7 +7918,6 @@ class DomainName
     "claude.app" => 0,
     "claudeusercontent.com" => 0,
     "frame.claudeusercontent.com" => 0,
-    "cursorusercontent.com" => -1,
     "apigee.io" => 0,
     "panel.dev" => 0,
     "siiites.com" => 0,
@@ -8010,6 +8009,7 @@ class DomainName
     "radio.fm" => 0,
     "cdn.bubble.io" => 0,
     "bubbleapps.io" => 0,
+    "manus.space" => 0,
     "bwcloud-os-instance.de" => -1,
     "cafjs.com" => 0,
     "canva-apps.cn" => 0,
@@ -8263,6 +8263,7 @@ class DomainName
     "dyn.now" => 0,
     "heimdns.online" => 0,
     "ddns.wtf" => 0,
+    "docsflowy.site" => 0,
     "online.th" => 0,
     "shop.th" => 0,
     "co.scot" => 0,
@@ -9285,6 +9286,7 @@ class DomainName
     "co.technology" => 0,
     "linkyard-cloud.ch" => 0,
     "linkyard.cloud" => 0,
+    "linkyhost.page" => 0,
     "members.linode.com" => 0,
     "nodebalancer.linode.com" => -1,
     "linodeobjects.com" => -1,
@@ -9308,6 +9310,7 @@ class DomainName
     "loginline.site" => 0,
     "lohmus.me" => 0,
     "lovable.app" => 0,
+    "auth.lovable.app" => 0,
     "lovableproject.com" => 0,
     "lovable.run" => 0,
     "lovable.sh" => 0,
@@ -9791,6 +9794,7 @@ class DomainName
     "owo.codes" => -1,
     "ox.rs" => 0,
     "oy.lc" => 0,
+    "pagelemon.dev" => 0,
     "pgfog.com" => 0,
     "gotpantheon.com" => 0,
     "pantheonsite.io" => 0,
@@ -9992,6 +9996,8 @@ class DomainName
     "we.crm.dev" => -1,
     "wf.crm.dev" => -1,
     "sandcats.io" => 0,
+    "sanity.run" => 0,
+    "sanity.studio" => 0,
     "sav.case" => 0,
     "logoip.com" => 0,
     "logoip.de" => 0,
@@ -10088,6 +10094,7 @@ class DomainName
     "sinaapp.com" => 0,
     "vipsinaapp.com" => 0,
     "siteleaf.net" => 0,
+    "sliplane.app" => 0,
     "small-web.org" => 0,
     "aeroport.fr" => 0,
     "avocat.fr" => 0,
@@ -10116,6 +10123,10 @@ class DomainName
     "my.de" => 0,
     "nxa.eu" => -1,
     "nx.gw" => 0,
+    "apps.grok.bot" => -1,
+    "pages.grok.bot" => -1,
+    "cursorusercontent.com" => -1,
+    "grok.me" => 0,
     "spawnbase.app" => 0,
     "customer.speedpartner.de" => 0,
     "myspreadshop.at" => 0,
@@ -10371,7 +10382,6 @@ class DomainName
     "weeklylottery.org.uk" => 0,
     "wpenginepowered.com" => 0,
     "js.wpenginepowered.com" => 0,
-    "grok.me" => 0,
     "xenonconnect.de" => -1,
     "half.host" => 0,
     "cistron.nl" => 0,
