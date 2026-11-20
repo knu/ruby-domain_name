@@ -365,6 +365,26 @@ class TestDomainName < Test::Unit::TestCase
     assert_equal "日本", dn.tld_idn
   end
 
+  test "treat ideographic full stops as dots" do
+    # RFC 3490, section 3.1
+    ["\u3002", "\uFF0E", "\uFF61"].each { |dot|
+      dn = DomainName("www.example#{dot}co.uk")
+      assert_equal "www.example.co.uk", dn.hostname
+      assert_equal "example.co.uk", dn.domain
+      assert_equal "uk", dn.tld
+
+      dn = DomainName("日本語#{dot}jp#{dot}")
+      assert_equal "xn--wgv71a119e.jp", dn.hostname
+      assert_equal "xn--wgv71a119e.jp", dn.domain
+      assert_equal "日本語.jp", dn.domain_idn
+
+      assert_equal "example.co.uk", DomainName.normalize("Example#{dot}co.uk")
+      assert_equal true, DomainName("www.example.co.uk").cookie_domain?("example#{dot}co.uk")
+      assert_equal true, DomainName("www.example.co.uk") == "www.example#{dot}co.uk"
+      assert_raises(ArgumentError) { DomainName.new("#{dot}example.com") }
+    }
+  end
+
   test "return nil for an absent IDN domain" do
     assert_nil DomainName.new("com").domain_idn
   end
