@@ -47,5 +47,9 @@
       groupName: "development dependencies",
       minimumReleaseAge: "3 days",
     },
+    {
+      matchDatasources: ["rubygems"],
+      minimumReleaseAge: "3 days",
+    },
   ],
 }
