@@ -72,12 +72,16 @@ class DomainName
 
   DOT = '.'	# :nodoc:
 
+  # Characters other than DOT that separate labels (RFC 3490, section 3.1).
+  LABEL_SEPARATORS = "\u3002\uFF0E\uFF61"	# :nodoc:
+
   # Parses _hostname_ into a DomainName object.  An IP address is also
   # accepted.  An IPv6 address may be enclosed in square brackets.
   def initialize(hostname)
     hostname.is_a?(String) or
       (hostname.respond_to?(:to_str) && (hostname = hostname.to_str).is_a?(String)) or
       raise TypeError, "#{hostname.class} is not a String"
+    hostname = hostname.tr(LABEL_SEPARATORS, DOT) unless hostname.ascii_only?
     if hostname.start_with?(DOT)
       raise ArgumentError, "domain name must not start with a dot: #{hostname}"
     end
@@ -289,6 +293,7 @@ class DomainName
     # Input must be strictly ASCII-only or unicode.
     # The result will be a downcased, ASCII-only string.
     def normalize(domain)
+      domain = domain.tr(LABEL_SEPARATORS, DOT) unless domain.ascii_only?
       chomped = domain.chomp(DOT)
       normalized = chomped.ascii_only? ? chomped : chomped.unicode_normalize(:nfc)
 
