@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DomainName
-  ETLD_DATA_DATE = '2026-11-17T14:38:45Z'
+  ETLD_DATA_DATE = '2026-11-20T10:39:18Z'
 
   ETLD_DATA = {
     "ac" => 0,
@@ -8834,6 +8834,9 @@ class DomainName
     "freebox-os.fr" => 0,
     "freeboxos.fr" => 0,
     "freedesktop.org" => 0,
+    "pvf.cc" => 0,
+    "kz.ci" => 0,
+    "xyz.ci" => 0,
     "freemyip.com" => 0,
     "frusky.de" => -1,
     "wien.funkfeuer.at" => 0,
@@ -9633,6 +9636,7 @@ class DomainName
     "nh-serv.co.uk" => 0,
     "nimsite.uk" => 0,
     "ninjaneer-sites.com" => 0,
+    "nippy.site" => 0,
     "mmafan.biz" => 0,
     "myftp.biz" => 0,
     "no-ip.biz" => 0,
@@ -9865,8 +9869,14 @@ class DomainName
     "pstmn.io" => 0,
     "mock.pstmn.io" => 0,
     "httpbin.org" => 0,
+    "prairielearn-user-content.com" => -1,
     "prequalifyme.today" => 0,
     "xen.prgmr.com" => 0,
+    "ec.cc" => 0,
+    "eu.cc" => 0,
+    "gu.cc" => 0,
+    "uk.cc" => 0,
+    "us.cc" => 0,
     "priv.at" => 0,
     "c01.kr" => 0,
     "eliv-api.kr" => 0,
@@ -10280,11 +10290,6 @@ class DomainName
     "tche.br" => 0,
     "site.tb-hosting.com" => 0,
     "directwp.eu" => 0,
-    "ec.cc" => 0,
-    "eu.cc" => 0,
-    "gu.cc" => 0,
-    "uk.cc" => 0,
-    "us.cc" => 0,
     "edugit.io" => 0,
     "s3.teckids.org" => 0,
     "telebit.app" => 0,
@@ -10435,6 +10440,8 @@ class DomainName
     "affinitylottery.org.uk" => 0,
     "raffleentry.org.uk" => 0,
     "weeklylottery.org.uk" => 0,
+    "wordsmithmcpcontent.com" => 0,
+    "staging.wordsmithmcpcontent.com" => 0,
     "wpenginepowered.com" => 0,
     "js.wpenginepowered.com" => 0,
     "xenonconnect.de" => -1,
@@ -10457,6 +10464,7 @@ class DomainName
     "za.org" => 0,
     "zap.cloud" => 0,
     "zeabur.app" => 0,
+    "fj.kg" => 0,
     "zerops.app" => -1,
     "prg1-zerops.zone" => 0,
     "zerops.zone" => -1,
