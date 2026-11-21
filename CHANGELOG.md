@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.7.20261120](https://github.com/knu/ruby-domain_name/tree/v0.7.20261120) (2026-11-21)
+[Full Changelog](https://github.com/knu/ruby-domain_name/compare/v0.7.20261117...v0.7.20261120)
+
+- Update the eTLD database to 2026-11-20 10:39:18 UTC
+
 ## [v0.7.20261117](https://github.com/knu/ruby-domain_name/tree/v0.7.20261117) (2026-11-18)
 [Full Changelog](https://github.com/knu/ruby-domain_name/compare/v0.7.20261031...v0.7.20261117)
 
