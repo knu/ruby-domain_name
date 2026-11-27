@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   ruby-versions:
-    uses: ruby/actions/.github/workflows/ruby_versions.yml@674947565a7afd0edfc4d301c1f0ef65e30f18f5  # master
+    uses: ruby/actions/.github/workflows/ruby_versions.yml@f4d74de05ecaf77cb922e27210650f2838191429  # master
     with:
       engine: cruby
       min_version: 2.7
@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@v2.22.4
+        uses: step-security/harden-runner@v2.23.0
         with:
           egress-policy: audit
 
@@ -44,7 +44,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1.338.0
+        uses: ruby/setup-ruby@v1.343.0
         with:
           ruby-version: ${{matrix.ruby}}
 

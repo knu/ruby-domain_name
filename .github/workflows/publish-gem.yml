@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@v2.22.4
+        uses: step-security/harden-runner@v2.23.0
         with:
           egress-policy: audit
 
@@ -82,7 +82,7 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@v2.22.4
+        uses: step-security/harden-runner@v2.23.0
         with:
           egress-policy: audit
 
@@ -130,7 +130,7 @@ jobs:
           fi
 
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1.338.0
+        uses: ruby/setup-ruby@v1.343.0
         with:
           ruby-version: ruby
 
@@ -173,7 +173,7 @@ jobs:
 
       - name: Publish to RubyGems
         id: publish
-        uses: rubygems/release-gem@v1.4.1
+        uses: rubygems/release-gem@v1.4.2
 
       - name: Record deployment result
         if: ${{ always() && steps.deployment.outputs.id != '' }}
